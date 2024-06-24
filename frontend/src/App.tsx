@@ -11,13 +11,13 @@ export default function App() {
     if (chartContainerRef.current === null) {
       throw Error();
     }
-    
+
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: 'white' }
       },
-      width: 500,
-      height: 200
+      width: chartContainerRef.current.clientWidth,
+      height: 500
     });
     const candlestickSeries = chart.addCandlestickSeries({
       upColor: '#26a69a', downColor: '#ef5350', borderVisible: false,
