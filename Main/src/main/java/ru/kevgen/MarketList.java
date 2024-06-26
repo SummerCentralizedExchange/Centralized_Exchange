@@ -1,9 +1,13 @@
 package ru.kevgen;
 
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class MarketList {
     private OrderBook market;
     private Map<String, OrderBook> orderBooks;
@@ -51,5 +55,20 @@ public class MarketList {
             return offerMap;
         }
         return null;
+    }
+
+    public List<Order> getOrders(String coinName){
+        if(orderBooks.containsKey(coinName)){
+            OrderBook orderBook = orderBooks.get(coinName);
+            List<Order> allOrders = new ArrayList<>();
+            for(List<Order> orders : orderBook.getBidMap().values()){
+                allOrders.addAll(orders);
+            }
+            for(List<Order> orders : orderBook.getOfferMap().values()){
+                allOrders.addAll(orders);
+            }
+            return allOrders;
+        }
+        return new ArrayList<>();
     }
 }
