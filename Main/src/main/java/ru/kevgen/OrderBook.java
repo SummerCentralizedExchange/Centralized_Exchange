@@ -2,7 +2,12 @@ package ru.kevgen;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class OrderBook {
+    private final Logger logger = LoggerFactory.getLogger(OrderBook.class);
+
     private String coinName;
 
     private Map<Double, List<Order>> bidMap;
@@ -28,18 +33,24 @@ public class OrderBook {
         bidMap.put(order.getPrice(), orders);
         bidMaxPriceList.add(price);
         matchOrders();
+        logger.info("addBid: quantity {}", quantity );
+        logger.info("addBid: price {}", price);
     }
 
     public void addOffer(double price, int quantity) {
         List<Order> orders = getOrders(offerMap, price);
         Order order = new Order(price, quantity);
+        logger.info("addOffer: quantity {}", quantity );
+        logger.info("addOffer: price {}", price);
+        logger.info("offerMap: size {}", offerMap.size());
         orders.add(order);
+        logger.info("offerMap after insert size : {}", orders.size());
         offerMap.put(order.getPrice(), orders);
         offerMinPriceList.add(order.getPrice());
         matchOrders();
     }
 
-    private void matchOrders() {
+    public void matchOrders() {
         boolean stop = false;
         while (!stop){
             Double highestBid = bidMaxPriceList.peek();
@@ -47,6 +58,7 @@ public class OrderBook {
 
             if(lowestOffer == null || highestBid == null || lowestOffer > highestBid){
                 stop = true;
+                logger.info("OrderBook matchOrders finished = true");
             }else {
                 List<Order> bidOrders = bidMap.get(highestBid);
                 List<Order> offerOrders = offerMap.get(lowestOffer);
@@ -58,10 +70,12 @@ public class OrderBook {
                 int offerQuantity = offerOrder.getQuantity();
 
                 if(bidQuantity > offerQuantity){
+                    logger.info("bidQuantity > offerQuantity");
                     System.out.println(successfulTrade(offerQuantity, lowestOffer));
 
                     // Decrement quantity in bid
                     bidOrder.setQuantity(bidQuantity - offerQuantity);
+                    logger.info("bidQuantity remaining quantity : {}", bidQuantity);
 
                     // Close previous offer
                     offerOrders.remove(0);
@@ -69,10 +83,12 @@ public class OrderBook {
                         offerMinPriceList.remove();
                     }
                 }else if(offerQuantity > bidQuantity){
+                    logger.info("bidQuantity < offerQuantity");
                     System.out.println(successfulTrade(bidQuantity, highestBid));
 
                     // Decrement quantity in bid
                     offerOrder.setQuantity(offerQuantity - bidQuantity);
+                    logger.info("offerQuantity remaining quantity : {}", offerQuantity);
 
                     // Close previous bid
                     bidOrders.remove(0);
@@ -97,7 +113,11 @@ public class OrderBook {
     }
 
     private String successfulTrade(int offerQuantity, Double lowestOffer) {
+        logger.info("successfulTrade bidQuantity : {}", offerQuantity);
+        logger.info("successfulTrade lowestOffer : {}", lowestOffer);
+
         return offerQuantity + " share traded for " + lowestOffer + " per share.";
+
     }
 
     private List<Order> getOrders(Map<Double, List<Order>> hasmap, Double price){
