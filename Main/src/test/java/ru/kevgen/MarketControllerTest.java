@@ -35,7 +35,7 @@ public class MarketControllerTest {
     @Test
     public void testCreateOrder() throws Exception {
         OrderItem orderItem = new OrderItem();
-        orderItem.setCoinName("BTC");
+        orderItem.setCoinName("BTCUSDT");
         orderItem.setPrice(10000);
         orderItem.setQuantity(1);
         orderItem.setType("Limit");

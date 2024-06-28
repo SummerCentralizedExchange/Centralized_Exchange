@@ -11,7 +11,7 @@ public class MainTest {
 
     @Test
     public void addNewBid(){
-        market = new OrderBook("BTC");
+        market = new OrderBook("BTCUSDT");
         assertTrue(market.getBidMap().isEmpty());
         market.addBid(69.0, 1);
         assertTrue(market.getBidMap().containsKey(69.0));

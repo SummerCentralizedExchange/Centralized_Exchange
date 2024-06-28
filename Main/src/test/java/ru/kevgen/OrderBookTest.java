@@ -10,7 +10,7 @@ public class OrderBookTest {
 
     @Before
     public void init() {
-        market = new OrderBook("BTC");
+        market = new OrderBook("BTCUSDT");
     }
 
     @Test

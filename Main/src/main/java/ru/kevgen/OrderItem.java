@@ -1,14 +1,14 @@
 package ru.kevgen;
 
 public class OrderItem {
-    private String coinName;
+    private String symbol;
     private double price;
     private int quantity;
     private String type;
     private String transactionType;
 
-    public String getCoinName() {
-        return coinName;
+    public String getSymbolName() {
+        return symbol;
     }
 
     public double getPrice() {
@@ -27,8 +27,8 @@ public class OrderItem {
         return transactionType;
     }
 
-    public void setCoinName(String coinName) {
-        this.coinName = coinName;
+    public void setCoinName(String symbol) {
+        this.symbol = symbol;
     }
 
     public void setPrice(double price) {
