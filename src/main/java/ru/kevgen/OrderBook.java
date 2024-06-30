@@ -161,12 +161,12 @@ public class OrderBook {
         return offerMap;
     }
 
-    /* TO DO? */
+    // TODO: Pseudo-method. Now using as marker of starting Market. Mind is it need in future?
     public void openMarket() {
         System.out.println("Market opens.");
     }
 
-    /* TO DO? */
+    // TODO: Pseudo-method. Now using as marker of finising Market. Mind is it need in future?
     public void closeMarket() {
         logger.info("Market close.");
         printFailedTrades(bidMap, "Bid for ");
