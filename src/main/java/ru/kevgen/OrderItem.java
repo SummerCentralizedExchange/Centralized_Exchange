@@ -7,6 +7,14 @@ public class OrderItem {
     private String type;
     private String transactionType;
 
+    public OrderItem(String symbol, double price, int quantity, String type, String transactionType) {
+        this.symbol = symbol;
+        this.price = price;
+        this.quantity = quantity;
+        this.type = type;
+        this.transactionType = transactionType;
+    }
+
     public String getSymbolName() {
         return symbol;
     }
