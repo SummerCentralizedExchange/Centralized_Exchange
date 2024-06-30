@@ -67,7 +67,8 @@ public class OrderBook {
             if (lowestOffer == null || highestBid == null || lowestOffer > highestBid) {
                 stop = true;
                 logger.info("OrderBook matchOrders finished = true");
-            } else {
+            }
+            else {
                 List<Order> bidOrders = bidMap.get(highestBid);
                 List<Order> offerOrders = offerMap.get(lowestOffer);
 
