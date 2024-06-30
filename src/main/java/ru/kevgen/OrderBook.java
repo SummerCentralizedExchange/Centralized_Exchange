@@ -36,7 +36,7 @@ public class OrderBook {
         bidMaxPriceList.add(price);
         matchOrders();
 
-        logger.info("addBid: quantity {}", quantity );
+        logger.info("addBid: quantity {}", quantity);
         logger.info("addBid: price {}", price);
     }
 
@@ -45,7 +45,7 @@ public class OrderBook {
 
         List<Order> orders = getOrders(offerMap, price);
 
-        logger.info("addOffer: quantity {}", quantity );
+        logger.info("addOffer: quantity {}", quantity);
         logger.info("addOffer: price {}", price);
         logger.info("offerMap: size {}", offerMap.size());
 
@@ -67,8 +67,7 @@ public class OrderBook {
             if (lowestOffer == null || highestBid == null || lowestOffer > highestBid) {
                 stop = true;
                 logger.info("OrderBook matchOrders finished = true");
-            }
-            else {
+            } else {
                 List<Order> bidOrders = bidMap.get(highestBid);
                 List<Order> offerOrders = offerMap.get(lowestOffer);
 
@@ -139,18 +138,18 @@ public class OrderBook {
     /**
      * Returns the list of orders associated with the given price.
      * If no orders exist for the given price, a new empty list is returned.
-     *
+     * <p>
      * This method is used to ensure that there is always a list available
      * to add new orders to, regardless of whether there are existing orders
      * at the specified price.
      *
      * @param hasmap the map containing lists of orders grouped by price
-     * @param price the price for which to retrieve the list of orders
+     * @param price  the price for which to retrieve the list of orders
      * @return the list of orders associated with the given price,
-     *         or a new empty list if no orders exist for the given price
+     * or a new empty list if no orders exist for the given price
      */
 
-    private List<Order> getOrders(Map<Double, List<Order>> hasmap, Double price){
+    private List<Order> getOrders(Map<Double, List<Order>> hasmap, Double price) {
         return hasmap.getOrDefault(price, new ArrayList<>());
     }
 
@@ -163,20 +162,20 @@ public class OrderBook {
     }
 
     /* TO DO? */
-    public void openMarket(){
+    public void openMarket() {
         System.out.println("Market opens.");
     }
 
     /* TO DO? */
-    public void closeMarket(){
+    public void closeMarket() {
         logger.info("Market close.");
         printFailedTrades(bidMap, "Bid for ");
         printFailedTrades(offerMap, "Offer of ");
     }
 
-    private void printFailedTrades(Map<Double, List<Order>> hasmap, String coin){
-        for (Map.Entry<Double, List<Order>> entry : hasmap.entrySet()){
-            for (Order order : entry.getValue()){
+    private void printFailedTrades(Map<Double, List<Order>> hasmap, String coin) {
+        for (Map.Entry<Double, List<Order>> entry : hasmap.entrySet()) {
+            for (Order order : entry.getValue()) {
                 logger.info(coin + order.getQuantity() + "shares for " + order.getPrice());
             }
         }

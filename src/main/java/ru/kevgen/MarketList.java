@@ -23,41 +23,41 @@ public class MarketList {
         orderBooks.put("Test", market);
     }
 
-    public void add(String symbol){
+    public void add(String symbol) {
         logger.info("MarketList Add coin: " + symbol);
 
-        if(!orderBooks.containsKey(symbol)){
+        if (!orderBooks.containsKey(symbol)) {
             market = new OrderBook(symbol);
             orderBooks.put(symbol, market);
         }
     }
 
-    public void bidAdd(OrderItem bid){
+    public void bidAdd(OrderItem bid) {
         logger.info("MarketList AddBid name : {}", bid.getSymbolName());
         logger.info("MarketList AddBid price : {}", bid.getPrice());
         logger.info("MarketList AddBid quantity : {}", bid.getQuantity());
 
-        if(orderBooks.containsKey(bid.getSymbolName())) {
+        if (orderBooks.containsKey(bid.getSymbolName())) {
             OrderBook orderBook = orderBooks.get(bid.getSymbolName());
             orderBook.addBid(bid.getPrice(), bid.getQuantity());
         }
     }
 
-    public void offerAdd(OrderItem offer){
+    public void offerAdd(OrderItem offer) {
         logger.info("MarketList offerAdd name : {}", offer.getSymbolName());
         logger.info("MarketList offerAdd price : {}", offer.getPrice());
         logger.info("MarketList offerAdd quantity : {}", offer.getQuantity());
 
-        if(orderBooks.containsKey(offer.getSymbolName())) {
+        if (orderBooks.containsKey(offer.getSymbolName())) {
             OrderBook orderBook = orderBooks.get(offer.getSymbolName());
             orderBook.addOffer(offer.getPrice(), offer.getQuantity());
         }
     }
 
-    public Map<Double, List<Order>> getBidMap(OrderItem bid){
+    public Map<Double, List<Order>> getBidMap(OrderItem bid) {
         logger.info("MarketList GetBidMap name : {}", bid.getSymbolName());
 
-        if(orderBooks.containsKey(bid.getSymbolName())) {
+        if (orderBooks.containsKey(bid.getSymbolName())) {
             OrderBook orderBook = orderBooks.get(bid.getSymbolName());
             Map<Double, List<Order>> bidMap = orderBook.getBidMap();
             return bidMap;
@@ -66,10 +66,10 @@ public class MarketList {
         return null;
     }
 
-    public Map<Double, List<Order>> getOfferMap(OrderItem offer){
+    public Map<Double, List<Order>> getOfferMap(OrderItem offer) {
         logger.info("MarketList GetOfferMap name : {}", offer.getSymbolName());
 
-        if(orderBooks.containsKey(offer.getSymbolName())){
+        if (orderBooks.containsKey(offer.getSymbolName())) {
 
             OrderBook orderBook = orderBooks.get(offer.getSymbolName());
             Map<Double, List<Order>> offerMap = orderBook.getOfferMap();
@@ -79,16 +79,16 @@ public class MarketList {
         return null;
     }
 
-    public List<Order> getOrders(String coinName){
-        if(orderBooks.containsKey(coinName)) {
+    public List<Order> getOrders(String coinName) {
+        if (orderBooks.containsKey(coinName)) {
             OrderBook orderBook = orderBooks.get(coinName);
             List<Order> allOrders = new ArrayList<>();
 
-            for(List<Order> orders : orderBook.getBidMap().values()){
+            for (List<Order> orders : orderBook.getBidMap().values()) {
                 allOrders.addAll(orders);
             }
 
-            for(List<Order> orders : orderBook.getOfferMap().values()){
+            for (List<Order> orders : orderBook.getOfferMap().values()) {
                 allOrders.addAll(orders);
             }
 

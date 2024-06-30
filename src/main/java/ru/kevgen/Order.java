@@ -26,7 +26,7 @@ public class Order {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.price + " " + this.quantity;
     }
 }
