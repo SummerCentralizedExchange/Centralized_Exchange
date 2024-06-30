@@ -38,12 +38,12 @@ public class MarketControllerTest {
 
         mockMvc.perform(post("/v5/order/create")
                         .param("category", "crypto")
-                        .param("symbol", "BTC")
+                        .param("symbol", "BTCUSDT")
                         .param("side", "Buy")
                         .param("orderType", "Limit")
                         .param("qty", "1")
                         .contentType("application/json")
-                        .content("{\"coinName\":\"BTC\",\"price\":10000,\"quantity\":1,\"type\":\"Limit\",\"transactionType\":\"Buy\"}"))
+                        .content("{\"coinName\":\"BTCUSDT\",\"price\":10000,\"quantity\":1,\"type\":\"Limit\",\"transactionType\":\"Buy\"}"))
                 .andExpect(status().isOk());
 
         verify(market, times(1)).bidAdd(any(OrderItem.class));
@@ -54,9 +54,9 @@ public class MarketControllerTest {
         when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(10000, 1)));
 
         mockMvc.perform(get("/v5/order/list")
-                        .param("symbol", "BTC"))
+                        .param("symbol", "BTCUSDT"))
                 .andExpect(status().isOk());
 
-        verify(market, times(1)).getOrders("BTC");
+        verify(market, times(1)).getOrders("BTCUSDT");
     }
 }
