@@ -1,4 +1,4 @@
-package ru.kevgen;
+package ru.spbstu.sce.orderbook;
 
 public class Order {
     private double price;

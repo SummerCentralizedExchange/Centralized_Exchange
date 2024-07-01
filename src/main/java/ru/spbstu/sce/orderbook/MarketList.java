@@ -1,4 +1,4 @@
-package ru.kevgen;
+package ru.spbstu.sce.orderbook;
 
 import org.springframework.stereotype.Service;
 

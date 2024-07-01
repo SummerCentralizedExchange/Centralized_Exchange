@@ -1,4 +1,4 @@
-package ru.kevgen;
+package ru.spbstu.sce.orderbook;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

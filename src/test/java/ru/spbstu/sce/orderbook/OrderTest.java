@@ -1,4 +1,4 @@
-package ru.kevgen;
+package ru.spbstu.sce.orderbook;
 
 import static org.junit.Assert.*;
 
