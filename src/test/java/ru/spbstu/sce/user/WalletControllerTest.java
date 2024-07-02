@@ -1,0 +1,39 @@
+package ru.spbstu.sce.user;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class WalletControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    public void testGetWalletBalance() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].symbol").exists())
+                .andExpect(jsonPath("$[0].walletBalance").exists());
+    }
+
+    @Test
+    public void testGetWalletBalanceWithSymbol() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
+                        .param("symbol", "BTCUSDT,ETHUSDT")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].symbol").value("BTCUSDT"))
+                .andExpect(jsonPath("$[1].symbol").value("ETHUSDT"));
+    }
+}
