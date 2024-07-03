@@ -1,19 +1,11 @@
 package ru.spbstu.sce.user;
 
 public class CreateUserRequest {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public CreateUserRequest(String username, String password) {
         this.username = username;
-        this.password = password;
-    }
-
-    public void setUserName(String userName) {
-        this.username = userName;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
     }
 
