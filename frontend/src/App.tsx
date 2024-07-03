@@ -1,4 +1,5 @@
 import { createChart, ColorType} from "lightweight-charts";
+import { OrderBook } from '@lab49/react-order-book';
 import React, { useEffect, useRef } from 'react';
 
 export default function App() {
@@ -42,7 +43,20 @@ export default function App() {
     return () => {chart.remove();};
   }, []);
 
+  const book = {
+    asks: [
+      ['1.01', '2'],
+      ['1.02', '3'],
+    ],
+    bids: [
+      ['0.99', '5'],
+      ['0.98', '3'],
+    ],
+  };
+
   return (
-    <div ref={chartContainerRef}> </div>
+    <div ref={chartContainerRef}>
+       <OrderBook book={book} />
+    </div>
   );
 }
