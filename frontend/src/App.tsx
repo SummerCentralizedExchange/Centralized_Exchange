@@ -1,6 +1,6 @@
 import { createChart, ColorType} from "lightweight-charts";
-import { OrderBook } from '@lab49/react-order-book';
 import React, { useEffect, useRef } from 'react';
+import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 
 export default function App() {
 
@@ -56,7 +56,7 @@ export default function App() {
 
   return (
     <div ref={chartContainerRef}>
-       <OrderBook book={book} />
+      <StyledOrderBook book={book} />
     </div>
   );
 }
