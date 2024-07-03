@@ -1,9 +1,11 @@
 import { createChart, ColorType} from "lightweight-charts";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import SymbolHeader from "./SymbolHeader/SymbolHeader";
 
 export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const [symbol, setSymbol] = useState<string>('BTCUSDT'); { /* TODO: now we use default `BTCUSDT`, but should make request to server with getting some symbol */}
 
   useEffect(() => {
     console.log("Render")
@@ -14,7 +16,7 @@ export default function App() {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: 'white' }
+        background: { type: ColorType.Solid, color: '#151825' }
       },
       width: chartContainerRef.current.clientWidth,
       height: 500
@@ -42,7 +44,21 @@ export default function App() {
     return () => {chart.remove();};
   }, []);
 
+  const book = {
+    asks: [
+      ['1.01', '2'],
+      ['1.02', '3'],
+    ],
+    bids: [
+      ['0.99', '5'],
+      ['0.98', '3'],
+    ],
+  };
+
   return (
-    <div ref={chartContainerRef}> </div>
+    <div>
+      <SymbolHeader symbol={symbol} />
+      <div ref={chartContainerRef}> </div>
+    </div>
   );
 }
