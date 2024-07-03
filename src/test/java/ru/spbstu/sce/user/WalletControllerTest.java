@@ -23,17 +23,17 @@ public class WalletControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].symbol").exists())
+                .andExpect(jsonPath("$[0].coin").exists())
                 .andExpect(jsonPath("$[0].walletBalance").exists());
     }
 
     @Test
     public void testGetWalletBalanceWithSymbol() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
-                        .param("symbol", "BTCUSDT,ETHUSDT")
+                        .param("coin", "BTCUSDT,ETHUSDT")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].symbol").value("BTCUSDT"))
-                .andExpect(jsonPath("$[1].symbol").value("ETHUSDT"));
+                .andExpect(jsonPath("$[0].coin").value("BTCUSDT"))
+                .andExpect(jsonPath("$[1].coin").value("ETHUSDT"));
     }
 }
