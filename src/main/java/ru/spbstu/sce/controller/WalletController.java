@@ -2,9 +2,10 @@ package ru.spbstu.sce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.spbstu.sce.user.wallet.WalletBalanceResponse;
+import ru.spbstu.sce.user.wallet.CoinWalletBalance;
 import ru.spbstu.sce.user.wallet.WalletService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,7 +16,9 @@ public class WalletController {
     private WalletService walletService;
 
     @GetMapping("/wallet-balance")
-    public List<WalletBalanceResponse> getWalletBalance(@RequestParam(value = "symbol", required = false) String symbol) {
-        return walletService.getWalletBalance(symbol);
+    public List<CoinWalletBalance> getWalletBalance(@RequestParam(value = "coin", required = false) String coin) {
+        List<String> symbols = (coin != null && !coin.isEmpty()) ? Arrays.asList(coin.split(",")) : null;
+        return walletService.getWalletBalance(symbols);
+
     }
 }
