@@ -2,31 +2,31 @@ package ru.spbstu.sce.user.wallet;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class WalletService {
 
-    public List<WalletBalanceResponse> getWalletBalance(String symbol) {
+    public List<CoinWalletBalance> getWalletBalance(List<String> symbols) {
         /** TO DO
          * There should be a logic for getting the wallet balance from a database or other source **/
-        List<WalletBalanceResponse> balances = new ArrayList<>();
+        List<CoinWalletBalance> balances = new ArrayList<>();
 
         //simple example
-        if(symbol == null || symbol.isEmpty()) {
-            balances.add(new WalletBalanceResponse("BTCUSDT", 0.5));
-            balances.add(new WalletBalanceResponse("ETHUSDT", 2.5));
-            balances.add(new WalletBalanceResponse("USDC", 1000.0));
+        if (symbols == null || symbols.isEmpty()) {
+            balances.add(new CoinWalletBalance("BTCUSDT", new BigDecimal("0.5")));
+            balances.add(new CoinWalletBalance("ETHUSDT", new BigDecimal("2.5")));
+            balances.add(new CoinWalletBalance("USDC", new BigDecimal("100.0")));
         } else {
-            String[] symbols = symbol.split(",");
-            for(String coin : symbols) {
-                if("BTCUSDT".equals(coin)) {
-                    balances.add(new WalletBalanceResponse("BTCUSDT", 0.5));
-                } else if ("ETHUSDT".equals(coin)) {
-                    balances.add(new WalletBalanceResponse("ETHUSDT", 2.5));
-                } else if ("USDC".equals(coin)) {
-                    balances.add(new WalletBalanceResponse("USDC", 1000.0));
+            for (String symbol : symbols) {
+                if ("BTCUSDT".equals(symbol)) {
+                    balances.add(new CoinWalletBalance("BTCUSDT", new BigDecimal("0.5")));
+                } else if ("ETHUSDT".equals(symbol)) {
+                    balances.add(new CoinWalletBalance("ETHUSDT", new BigDecimal("2.5")));
+                } else if ("USDC".equals(symbol)) {
+                    balances.add(new CoinWalletBalance("USDC", new BigDecimal("100.0")));
                 }
             }
         }
