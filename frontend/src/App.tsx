@@ -15,7 +15,7 @@ export default function App() {
 
     const chart = createChart(chartContainerRef.current, {
       layout: {
-        background: { type: ColorType.Solid, color: 'white' }
+        background: { type: ColorType.Solid, color: '#151825' }
       },
       width: chartContainerRef.current.clientWidth,
       height: 500
