@@ -34,8 +34,4 @@ public class User {
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
-
-    public void setUid(UUID uid) {
-        this.uid = uid;
-    }
 }
