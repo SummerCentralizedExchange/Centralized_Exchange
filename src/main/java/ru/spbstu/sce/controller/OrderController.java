@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
-public class MarketController {
+public class OrderController {
 
     @Autowired
     private MarketList market;
