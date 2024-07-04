@@ -23,12 +23,11 @@ public class WalletControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coin").exists())
-                .andExpect(jsonPath("$[0].walletBalance").exists());
+                .andExpect(jsonPath("$.length()").value(0)); // Ожидаем пустой список
     }
 
     @Test
-    public void testGetWalletBalanceWithСoin() throws Exception {
+    public void testGetWalletBalanceWithCoin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
                         .param("coin", "BTC,ETH")
                         .contentType(MediaType.APPLICATION_JSON))

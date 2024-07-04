@@ -17,11 +17,11 @@ public class WalletService {
 
         List<CoinWalletBalance> balances = new ArrayList<>();
 
-        //simple example
         if (symbols.isEmpty()) {
             return new ArrayList<>();
-        } else {
-            String symbol = symbols.get(0);
+        }
+
+        for (String symbol : symbols) {
             if ("BTC".equals(symbol)) {
                 balances.add(new CoinWalletBalance("BTC", new BigDecimal("0.5")));
             } else if ("ETH".equals(symbol)) {
@@ -32,6 +32,7 @@ public class WalletService {
                 balances.add(new CoinWalletBalance(symbol, BigDecimal.ZERO));
             }
         }
+
         return balances;
     }
 }
