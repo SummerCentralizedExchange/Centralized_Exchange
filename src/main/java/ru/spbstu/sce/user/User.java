@@ -5,8 +5,8 @@ import java.util.UUID;
 public class User {
     private String username;
     private String password;
-    private UUID uid;
-    private String apiKey;
+    private final UUID uid;
+    private final String apiKey;
 
     public User(String username, String password, UUID uid, String apiKey) {
         this.username = username;
@@ -31,7 +31,7 @@ public class User {
         this.username = username;
     }
 
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public String getPassword() {
+        return password;
     }
 }

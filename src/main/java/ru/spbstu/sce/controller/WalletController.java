@@ -6,6 +6,7 @@ import ru.spbstu.sce.user.wallet.CoinWalletBalance;
 import ru.spbstu.sce.user.wallet.WalletService;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -17,8 +18,7 @@ public class WalletController {
 
     @GetMapping("/wallet-balance")
     public List<CoinWalletBalance> getWalletBalance(@RequestParam(value = "coin", required = false) String coin) {
-        List<String> symbols = (coin != null && !coin.isEmpty()) ? Arrays.asList(coin.split(",")) : null;
+        List<String> symbols = (coin != null && !coin.isEmpty()) ? Arrays.asList(coin.split(",")) : Collections.emptyList();
         return walletService.getWalletBalance(symbols);
-
     }
 }

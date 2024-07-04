@@ -30,9 +30,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.apiKey").exists());
     }
 
-    //The test must be failed
     @Test
-    public void testCreateUserWithEmptyUsername() throws Exception {
+    public void testCreateUserWithEmptyUsernameIncorrect() throws Exception {
         String jsonRequest = "{ \"username\": \"\", \"password\": \"password123\" }";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")
@@ -41,9 +40,8 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    //The test must be failed
     @Test
-    public void testCreateUserWithEmptyPassword() throws Exception {
+    public void testCreateUserWithEmptyPasswordIncorrect() throws Exception {
         String jsonRequest = "{ \"username\": \"testuser\", \"password\": \"\" }";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/create")

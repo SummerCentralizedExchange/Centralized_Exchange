@@ -28,12 +28,12 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void testGetWalletBalanceWithSymbol() throws Exception {
+    public void testGetWalletBalanceWithСoin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/account/wallet-balance")
-                        .param("coin", "BTCUSDT,ETHUSDT")
+                        .param("coin", "BTC,ETH")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].coin").value("BTCUSDT"))
-                .andExpect(jsonPath("$[1].coin").value("ETHUSDT"));
+                .andExpect(jsonPath("$[0].coin").value("BTC"))
+                .andExpect(jsonPath("$[1].coin").value("ETH"));
     }
 }
