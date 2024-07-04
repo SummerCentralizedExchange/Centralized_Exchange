@@ -11,9 +11,22 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
 
   return (
     <>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
+      <style>
+        {styles}
+      </style>
+      <OrderBook
+        book={{ bids, asks }}
+        fullOpacity
+        interpolateColor={(color) => color}
+        listLength={10}
+        stylePrefix="MakeItNiceAgain"
+      />
+    </>
+  );
+}
+
+
+const styles = `
             .MakeItNiceAgain {
               background-color: #151825;
               color: rgba(255, 255, 255, 0.6);
@@ -114,17 +127,4 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
               width: 28px;
               overflow: hidden;
             }
-          `,
-        }}
-      />
-
-      <OrderBook
-        book={{ bids, asks }}
-        fullOpacity
-        interpolateColor={(color) => color}
-        listLength={10}
-        stylePrefix="MakeItNiceAgain"
-      />
-    </>
-  );
-}
+          `
