@@ -1,11 +1,8 @@
 import { OrderBook } from '@lab49/react-order-book';
 
 export default function StyledOrderBook({ book }: { book: { bids: string[][], asks: string[][] } }) {
-  // Ensure bids and asks are defined and are arrays
-  const { bids = [], asks = [] } = book;
-
   // Ensure there are elements in bids and asks
-  if (!bids.length || !asks.length) {
+  if (!book.bids.length || !book.asks.length) {
     return <div>Order book data is not available</div>;
   }
 
@@ -14,8 +11,9 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
       <style>
         {styles}
       </style>
+
       <OrderBook
-        book={{ bids, asks }}
+        book={book}
         fullOpacity
         interpolateColor={(color) => color}
         listLength={10}
