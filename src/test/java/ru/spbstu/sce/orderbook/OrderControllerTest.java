@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.spbstu.sce.controller.OrderController;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +38,7 @@ public class OrderControllerTest {
     public void testCreateOrder() throws Exception {
         OrderItem orderItem = new OrderItem();
         orderItem.setCoinName("BTCUSDT");
-        orderItem.setPrice(10000);
+        orderItem.setPrice(BigDecimal.valueOf(10000));
         orderItem.setQuantity(1);
         orderItem.setType("Limit");
         orderItem.setTransactionType("Buy");
@@ -57,7 +58,7 @@ public class OrderControllerTest {
 
     @Test
     public void testGetOrderList() throws Exception {
-        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(10000, 1)));
+        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(BigDecimal.valueOf(10000), 1)));
 
         mockMvc.perform(get("/v5/order/list")
                         .param("symbol", "BTCUSDT"))

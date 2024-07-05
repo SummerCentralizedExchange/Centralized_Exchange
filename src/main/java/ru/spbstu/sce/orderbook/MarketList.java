@@ -2,6 +2,7 @@ package ru.spbstu.sce.orderbook;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,25 +55,25 @@ public class MarketList {
         }
     }
 
-    public Map<Double, List<Order>> getBidMap(OrderItem bid) {
-        logger.info("MarketList GetBidMap name : {}", bid.getSymbolName());
+    public Map<BigDecimal, List<Order>> getBidMap(String symbol) {
+        logger.info("MarketList GetBidMap name : {}", symbol);
 
-        if (orderBooks.containsKey(bid.getSymbolName())) {
-            OrderBook orderBook = orderBooks.get(bid.getSymbolName());
-            Map<Double, List<Order>> bidMap = orderBook.getBidMap();
+        if (orderBooks.containsKey(symbol)) {
+            OrderBook orderBook = orderBooks.get(symbol);
+            Map<BigDecimal, List<Order>> bidMap = orderBook.getBidMap();
             return bidMap;
         }
 
         return null;
     }
 
-    public Map<Double, List<Order>> getOfferMap(OrderItem offer) {
-        logger.info("MarketList GetOfferMap name : {}", offer.getSymbolName());
+    public Map<BigDecimal, List<Order>> getOfferMap(String symbol) {
+        logger.info("MarketList GetOfferMap name : {}", symbol);
 
-        if (orderBooks.containsKey(offer.getSymbolName())) {
+        if (orderBooks.containsKey(symbol)) {
 
-            OrderBook orderBook = orderBooks.get(offer.getSymbolName());
-            Map<Double, List<Order>> offerMap = orderBook.getOfferMap();
+            OrderBook orderBook = orderBooks.get(symbol);
+            Map<BigDecimal, List<Order>> offerMap = orderBook.getOfferMap();
             return offerMap;
         }
 
