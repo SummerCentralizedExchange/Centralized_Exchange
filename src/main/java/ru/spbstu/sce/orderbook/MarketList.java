@@ -98,4 +98,8 @@ public class MarketList {
 
         return new ArrayList<>();
     }
+
+    public boolean isValidSymbol(String symbol) {
+        return orderBooks.containsKey(symbol);
+    }
 }
