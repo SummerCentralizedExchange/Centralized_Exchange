@@ -21,6 +21,7 @@ public class UserBalance {
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
+    @Column(precision = 38, scale = 10)
     private BigDecimal amount;
 
     public UserBalanceId getId() {

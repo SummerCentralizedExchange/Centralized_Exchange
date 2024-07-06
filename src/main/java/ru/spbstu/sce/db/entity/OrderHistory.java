@@ -12,7 +12,10 @@ public class OrderHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderHistory_id;
 
+    @Column(precision = 38, scale = 10)
     private BigDecimal price;
+
+    @Column(precision = 38, scale = 10)
     private BigDecimal quantity;
     private LocalDateTime timestamp;
     private String side;
