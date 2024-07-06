@@ -1,11 +1,14 @@
-package ru.spbstu.sce.orderbook;
+ package ru.spbstu.sce.orderbook;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 
 public class OrderBookTest {
+    public static final BigDecimal A_PRICE = BigDecimal.valueOf(12000);
     private OrderBook market;
 
     @Before
@@ -17,8 +20,8 @@ public class OrderBookTest {
     public void addBid() {
         init();
         assertTrue(market.getBidMap().isEmpty());
-        market.addBid(12000, 12);
-        assertTrue(market.getBidMap().containsKey(12000.0));
+        market.addBid(A_PRICE, 12);
+        assertTrue(market.getBidMap().containsKey(A_PRICE));
 
     }
 
@@ -26,19 +29,19 @@ public class OrderBookTest {
     public void addDuplicateKey(){
         init();
         assertTrue(market.getBidMap().isEmpty());
-        market.addBid(12000, 12);
-        market.addBid(12000, 1);
+        market.addBid(A_PRICE, 12);
+        market.addBid(A_PRICE, 1);
 
-        assertEquals(12, market.getBidMap().get(12000.0).get(0).getQuantity());
-        assertEquals(1, market.getBidMap().get(12000.0).get(1).getQuantity());
+        assertEquals(12, market.getBidMap().get(A_PRICE).get(0).getQuantity());
+        assertEquals(1, market.getBidMap().get(A_PRICE).get(1).getQuantity());
     }
 
     @Test
     public void addOffer() {
         init();
         assertTrue(market.getOfferMap().isEmpty());
-        market.addOffer(12000, 12);
-        assertTrue(market.getOfferMap().containsKey(12000.0));
+        market.addOffer(A_PRICE, 12);
+        assertTrue(market.getOfferMap().containsKey(A_PRICE));
 
     }
 
@@ -46,19 +49,19 @@ public class OrderBookTest {
     public void addOfferDuplicateKey() {
         init();
         assertTrue(market.getOfferMap().isEmpty());
-        market.addOffer(12000, 12);
-        market.addOffer(12000, 1);
-        assertEquals(12, market.getOfferMap().get(12000.0).get(0).getQuantity());
-        assertEquals(1, market.getOfferMap().get(12000.0).get(1).getQuantity());
+        market.addOffer(A_PRICE, 12);
+        market.addOffer(A_PRICE, 1);
+        assertEquals(12, market.getOfferMap().get(A_PRICE).get(0).getQuantity());
+        assertEquals(1, market.getOfferMap().get(A_PRICE).get(1).getQuantity());
     }
 
     @Test
     public void ReducingNumberOffers(){
         init();
-        market.addOffer(12.0, 6);
-        market.addBid(12.0, 9);
+        market.addOffer(A_PRICE, 6);
+        market.addBid(A_PRICE, 9);
         market.matchOrders();
-        assertEquals(3, market.getBidMap().get(12.0).get(0).getQuantity());
-        assertTrue(market.getOfferMap().get(12.0).isEmpty());
+        assertEquals(3, market.getBidMap().get(A_PRICE).get(0).getQuantity());
+        assertTrue(market.getOfferMap().get(A_PRICE).isEmpty());
     }
 }
