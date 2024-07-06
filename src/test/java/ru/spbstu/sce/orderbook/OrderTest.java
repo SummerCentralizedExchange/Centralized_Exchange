@@ -37,7 +37,7 @@ public class OrderTest {
 
     @org.junit.Test
     public void testToString() {
-        order = new Order(BigDecimal.valueOf(69), 1);
+        order = new Order(BigDecimal.valueOf(69.0), 1);
         assertEquals("69.0 1", order.toString());
     }
 }

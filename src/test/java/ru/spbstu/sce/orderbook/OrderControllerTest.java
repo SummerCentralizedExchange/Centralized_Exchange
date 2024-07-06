@@ -36,7 +36,7 @@ public class OrderControllerTest {
 
     @Test
     public void testCreateOrder() throws Exception {
-        mockMvc.perform(post("/v5/order/create")
+        mockMvc.perform(post("/order/create")
                         .param("category", "crypto")
                         .param("symbol", "BTCUSDT")
                         .param("side", "Buy")
@@ -53,7 +53,7 @@ public class OrderControllerTest {
     public void testGetOrderList() throws Exception {
         when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(BigDecimal.valueOf(10000), 1)));
 
-        mockMvc.perform(get("/v5/order/list")
+        mockMvc.perform(get("/order/list")
                         .param("symbol", "BTCUSDT"))
                 .andExpect(status().isOk());
 
