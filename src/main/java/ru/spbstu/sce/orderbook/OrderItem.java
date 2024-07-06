@@ -9,7 +9,7 @@ public class OrderItem {
     private String type;
     private String transactionType;
 
-    public String getSymbolName() {
+    public String getSymbol() {
         return symbol;
     }
 
@@ -29,7 +29,7 @@ public class OrderItem {
         return transactionType;
     }
 
-    public void setCoinName(String symbol) {
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
