@@ -1,5 +1,6 @@
 package ru.spbstu.sce.orderbook;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -8,25 +9,25 @@ import org.slf4j.LoggerFactory;
 public class OrderBook {
     private final Logger logger = LoggerFactory.getLogger(OrderBook.class);
 
-    private String symbol;
+    private final String symbol;
 
-    private Map<Double, List<Order>> bidMap;
-    private Map<Double, List<Order>> offerMap;
+    private final Map<BigDecimal, List<Order>> bidMap;
+    private final Map<BigDecimal, List<Order>> offerMap;
 
-    private Queue<Double> bidMaxPriceList;
-    private Queue<Double> offerMinPriceList;
+    private final Queue<BigDecimal> bidMaxPriceList;
+    private final Queue<BigDecimal> offerMinPriceList;
 
     public OrderBook(String symbol) {
         this.symbol = symbol;
 
-        bidMap = new HashMap<>();
-        offerMap = new HashMap<>();
+        bidMap = new TreeMap<>(Comparator.reverseOrder()); // Usually need bids in reverse price order
+        offerMap = new TreeMap<>();
 
         bidMaxPriceList = new PriorityQueue<>();
         offerMinPriceList = new PriorityQueue<>();
     }
 
-    public void addBid(double price, int quantity) {
+    public void addBid(BigDecimal price, int quantity) {
         Order order = new Order(price, quantity);
 
         List<Order> orders = getOrders(bidMap, price);
@@ -40,7 +41,7 @@ public class OrderBook {
         logger.info("addBid: price {}", price);
     }
 
-    public void addOffer(double price, int quantity) {
+    public void addOffer(BigDecimal price, int quantity) {
         Order order = new Order(price, quantity);
 
         List<Order> orders = getOrders(offerMap, price);
@@ -60,11 +61,11 @@ public class OrderBook {
     public void matchOrders() {
         boolean stop = false;
         while (!stop) {
-            Double highestBid = bidMaxPriceList.peek();
-            Double lowestOffer = offerMinPriceList.peek();
+            BigDecimal highestBid = bidMaxPriceList.peek();
+            BigDecimal lowestOffer = offerMinPriceList.peek();
 
             //Completion condition: there are no purchase or sale orders, or the lowest sale price is higher than the highest purchase price
-            if (lowestOffer == null || highestBid == null || lowestOffer > highestBid) {
+            if (lowestOffer == null || highestBid == null || lowestOffer.compareTo(highestBid) > 0) {
                 stop = true;
                 logger.info("OrderBook matchOrders finished = true");
             }
@@ -128,7 +129,7 @@ public class OrderBook {
     }
 
 
-    private String makeSuccessfulTradeInfo(int offerQuantity, Double lowestOffer) {
+    private String makeSuccessfulTradeInfo(int offerQuantity, BigDecimal lowestOffer) {
         logger.info("successfulTrade bidQuantity : {}", offerQuantity);
         logger.info("successfulTrade lowestOffer : {}", lowestOffer);
 
@@ -150,15 +151,15 @@ public class OrderBook {
      * or a new empty list if no orders exist for the given price
      */
 
-    private List<Order> getOrders(Map<Double, List<Order>> hasmap, Double price) {
+    private List<Order> getOrders(Map<BigDecimal, List<Order>> hasmap, BigDecimal price) {
         return hasmap.getOrDefault(price, new ArrayList<>());
     }
 
-    public Map<Double, List<Order>> getBidMap() {
+    public Map<BigDecimal, List<Order>> getBidMap() {
         return bidMap;
     }
 
-    public Map<Double, List<Order>> getOfferMap() {
+    public Map<BigDecimal, List<Order>> getOfferMap() {
         return offerMap;
     }
 
@@ -174,8 +175,8 @@ public class OrderBook {
         printFailedTrades(offerMap, "Offer of ");
     }
 
-    private void printFailedTrades(Map<Double, List<Order>> hasmap, String coin) {
-        for (Map.Entry<Double, List<Order>> entry : hasmap.entrySet()) {
+    private void printFailedTrades(Map<BigDecimal, List<Order>> hasmap, String coin) {
+        for (Map.Entry<BigDecimal, List<Order>> entry : hasmap.entrySet()) {
             for (Order order : entry.getValue()) {
                 logger.info(coin + order.getQuantity() + "shares for " + order.getPrice());
             }
