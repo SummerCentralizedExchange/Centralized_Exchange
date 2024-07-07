@@ -1,10 +1,13 @@
 package ru.spbstu.sce.db.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import ru.spbstu.sce.db.entity.user.User;
 
 import java.math.BigDecimal;
 
 @Entity
+@Data
 @Table(name = "user_balance")
 public class UserBalance {
 
@@ -23,37 +26,5 @@ public class UserBalance {
 
     @Column(precision = 38, scale = 10)
     private BigDecimal amount;
-
-    public UserBalanceId getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Coin getCoin() {
-        return coin;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setId(UserBalanceId id) {
-        this.id = id;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setCoin(Coin coin) {
-        this.coin = coin;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 
 }

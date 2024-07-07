@@ -1,4 +1,4 @@
-package ru.spbstu.sce.user.wallet;
+package ru.spbstu.sce.db.entity.user.wallet;
 
 import java.math.BigDecimal;
 

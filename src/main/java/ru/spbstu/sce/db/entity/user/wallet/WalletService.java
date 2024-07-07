@@ -1,19 +1,18 @@
-package ru.spbstu.sce.user.wallet;
+package ru.spbstu.sce.db.entity.user.wallet;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class WalletService {
 
     public List<CoinWalletBalance> getWalletBalance(@NonNull List<String> symbols) {
-        /** TO DO
-         * There should be a logic for getting the wallet balance from a database or other source **/
+        /* TODO
+          There should be a logic for getting the wallet balance from a database or other source */
 
         List<CoinWalletBalance> balances = new ArrayList<>();
 

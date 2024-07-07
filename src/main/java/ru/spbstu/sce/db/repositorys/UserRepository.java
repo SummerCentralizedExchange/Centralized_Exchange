@@ -1,7 +1,14 @@
 package ru.spbstu.sce.db.repositorys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.spbstu.sce.db.entity.User;
+import org.springframework.stereotype.Repository;
+import ru.spbstu.sce.db.entity.user.User;
 
+import java.util.Optional;
+
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByLogin(String login);
+
+    boolean existsByLogin(String login);
 }
