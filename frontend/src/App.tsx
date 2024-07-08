@@ -1,7 +1,7 @@
 import { createChart, ColorType} from "lightweight-charts";
 import React, { useEffect, useRef, useState } from 'react';
 import SymbolHeader from "./SymbolHeader/SymbolHeader";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
