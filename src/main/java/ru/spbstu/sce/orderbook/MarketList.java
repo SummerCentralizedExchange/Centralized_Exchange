@@ -2,6 +2,7 @@ package ru.spbstu.sce.orderbook;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,65 +15,60 @@ import org.slf4j.LoggerFactory;
 public class MarketList {
     private final Logger logger = LoggerFactory.getLogger(MarketList.class);
 
-    private OrderBook market;
     private Map<String, OrderBook> orderBooks;
 
     public MarketList() {
-        market = new OrderBook("Test");
         orderBooks = new HashMap<>();
-        orderBooks.put("Test", market);
+        orderBooks.put("Test", new OrderBook("Test"));
     }
 
     public void add(String symbol) {
         logger.info("MarketList Add coin: " + symbol);
 
-        if (!orderBooks.containsKey(symbol)) {
-            market = new OrderBook(symbol);
-            orderBooks.put(symbol, market);
-        }
+        orderBooks.putIfAbsent(symbol, new OrderBook(symbol));
     }
 
     public void bidAdd(OrderItem bid) {
-        logger.info("MarketList AddBid name : {}", bid.getSymbolName());
+        logger.info("MarketList AddBid name : {}", bid.getSymbol());
         logger.info("MarketList AddBid price : {}", bid.getPrice());
         logger.info("MarketList AddBid quantity : {}", bid.getQuantity());
 
-        if (orderBooks.containsKey(bid.getSymbolName())) {
-            OrderBook orderBook = orderBooks.get(bid.getSymbolName());
+        if (orderBooks.containsKey(bid.getSymbol())) {
+            OrderBook orderBook = orderBooks.get(bid.getSymbol());
             orderBook.addBid(bid.getPrice(), bid.getQuantity());
         }
     }
 
     public void offerAdd(OrderItem offer) {
-        logger.info("MarketList offerAdd name : {}", offer.getSymbolName());
+        logger.info("MarketList offerAdd name : {}", offer.getSymbol());
         logger.info("MarketList offerAdd price : {}", offer.getPrice());
         logger.info("MarketList offerAdd quantity : {}", offer.getQuantity());
 
-        if (orderBooks.containsKey(offer.getSymbolName())) {
-            OrderBook orderBook = orderBooks.get(offer.getSymbolName());
+        if (orderBooks.containsKey(offer.getSymbol())) {
+            OrderBook orderBook = orderBooks.get(offer.getSymbol());
             orderBook.addOffer(offer.getPrice(), offer.getQuantity());
         }
     }
 
-    public Map<Double, List<Order>> getBidMap(OrderItem bid) {
-        logger.info("MarketList GetBidMap name : {}", bid.getSymbolName());
+    public Map<BigDecimal, List<Order>> getBidMap(String symbol) {
+        logger.info("MarketList GetBidMap name : {}", symbol);
 
-        if (orderBooks.containsKey(bid.getSymbolName())) {
-            OrderBook orderBook = orderBooks.get(bid.getSymbolName());
-            Map<Double, List<Order>> bidMap = orderBook.getBidMap();
+        if (orderBooks.containsKey(symbol)) {
+            OrderBook orderBook = orderBooks.get(symbol);
+            Map<BigDecimal, List<Order>> bidMap = orderBook.getBidMap();
             return bidMap;
         }
 
         return null;
     }
 
-    public Map<Double, List<Order>> getOfferMap(OrderItem offer) {
-        logger.info("MarketList GetOfferMap name : {}", offer.getSymbolName());
+    public Map<BigDecimal, List<Order>> getOfferMap(String symbol) {
+        logger.info("MarketList GetOfferMap name : {}", symbol);
 
-        if (orderBooks.containsKey(offer.getSymbolName())) {
+        if (orderBooks.containsKey(symbol)) {
 
-            OrderBook orderBook = orderBooks.get(offer.getSymbolName());
-            Map<Double, List<Order>> offerMap = orderBook.getOfferMap();
+            OrderBook orderBook = orderBooks.get(symbol);
+            Map<BigDecimal, List<Order>> offerMap = orderBook.getOfferMap();
             return offerMap;
         }
 
@@ -96,5 +92,9 @@ public class MarketList {
         }
 
         return new ArrayList<>();
+    }
+
+    public boolean isValidSymbol(String symbol) {
+        return orderBooks.containsKey(symbol);
     }
 }

@@ -1,13 +1,16 @@
-package ru.spbstu.sce.orderbook;
+package ru.spbstu.sce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.spbstu.sce.orderbook.MarketList;
+import ru.spbstu.sce.orderbook.Order;
+import ru.spbstu.sce.orderbook.OrderItem;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/v5/order")
-public class MarketController {
+@RequestMapping("/order")
+public class OrderController {
 
     @Autowired
     private MarketList market;

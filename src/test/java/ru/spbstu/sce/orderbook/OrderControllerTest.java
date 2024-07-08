@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import ru.spbstu.sce.controller.OrderController;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -17,31 +19,24 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class MarketControllerTest {
+public class OrderControllerTest {
     private MockMvc mockMvc;
 
     @Mock
     private MarketList market;
 
     @InjectMocks
-    private MarketController marketController;
+    private OrderController orderController;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(marketController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(orderController).build();
     }
 
     @Test
     public void testCreateOrder() throws Exception {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setCoinName("BTCUSDT");
-        orderItem.setPrice(10000);
-        orderItem.setQuantity(1);
-        orderItem.setType("Limit");
-        orderItem.setTransactionType("Buy");
-
-        mockMvc.perform(post("/v5/order/create")
+        mockMvc.perform(post("/order/create")
                         .param("category", "crypto")
                         .param("symbol", "BTCUSDT")
                         .param("side", "Buy")
@@ -56,9 +51,9 @@ public class MarketControllerTest {
 
     @Test
     public void testGetOrderList() throws Exception {
-        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(10000, 1)));
+        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(BigDecimal.valueOf(10000), 1)));
 
-        mockMvc.perform(get("/v5/order/list")
+        mockMvc.perform(get("/order/list")
                         .param("symbol", "BTCUSDT"))
                 .andExpect(status().isOk());
 

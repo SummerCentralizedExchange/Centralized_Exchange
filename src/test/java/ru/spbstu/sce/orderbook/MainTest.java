@@ -3,6 +3,8 @@ package ru.spbstu.sce.orderbook;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 @SpringBootTest
 public class MainTest {
@@ -12,8 +14,8 @@ public class MainTest {
     public void addNewBid(){
         market = new OrderBook("BTCUSDT");
         assertTrue(market.getBidMap().isEmpty());
-        market.addBid(69.0, 1);
-        assertTrue(market.getBidMap().containsKey(69.0));
+        market.addBid(BigDecimal.valueOf(69.0), 1);
+        assertTrue(market.getBidMap().containsKey(BigDecimal.valueOf(69.0)));
     }
 
 }
