@@ -1,17 +1,19 @@
 package ru.spbstu.sce.orderbook;
 
+import java.math.BigDecimal;
+
 public class OrderItem {
     private String symbol;
-    private double price;
+    private BigDecimal price;
     private int quantity;
     private String type;
     private String transactionType;
 
-    public String getSymbolName() {
+    public String getSymbol() {
         return symbol;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -27,11 +29,11 @@ public class OrderItem {
         return transactionType;
     }
 
-    public void setCoinName(String symbol) {
+    public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

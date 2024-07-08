@@ -1,76 +1,50 @@
 package ru.spbstu.sce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.spbstu.sce.orderbook.MarketList;
 import ru.spbstu.sce.orderbook.Order;
-import ru.spbstu.sce.orderbook.OrderItem;
+import ru.spbstu.sce.orderbook.OrderBookResponse;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/market")
 public class MarketController {
 
     @Autowired
-    private MarketList market;
+    MarketList marketList;
 
-    @PostMapping("/create")
-    public String createOrder(@RequestBody OrderItem orderItem,
-                              @RequestParam String category,
-                              @RequestParam String symbol,
-                              @RequestParam(required = false) Integer isLeverage,
-                              @RequestParam String side,
-                              @RequestParam String orderType,
-                              @RequestParam double qty,
-                              @RequestParam(required = false) String marketUnit,
-                              @RequestParam(required = false) String price,
-                              @RequestParam(required = false) Integer triggerDirection,
-                              @RequestParam(required = false) String orderFilter,
-                              @RequestParam(required = false) String triggerPrice,
-                              @RequestParam(required = false) String triggerBy,
-                              @RequestParam(required = false) String orderIv,
-                              @RequestParam(required = false) String timeInForce,
-                              @RequestParam(required = false) Integer positionIdx,
-                              @RequestParam(required = false) String orderLinkId,
-                              @RequestParam(required = false) String takeProfit,
-                              @RequestParam(required = false) String stopLoss,
-                              @RequestParam(required = false) String tpTriggerBy,
-                              @RequestParam(required = false) String slTriggerBy,
-                              @RequestParam(required = false) Boolean reduceOnly,
-                              @RequestParam(required = false) Boolean closeOnTrigger,
-                              @RequestParam(required = false) String smpType,
-                              @RequestParam(required = false) Boolean mmp,
-                              @RequestParam(required = false) String tpslMode,
-                              @RequestParam(required = false) String tpLimitPrice,
-                              @RequestParam(required = false) String slLimitPrice,
-                              @RequestParam(required = false) String tpOrderType,
-                              @RequestParam(required = false) String slOrderType) {
-
-        // We determine the type of operation (purchase or sale)
-        if (side.equalsIgnoreCase("Buy")) {
-            market.bidAdd(orderItem);
-        } else if (side.equalsIgnoreCase("Sell")) {
-            market.offerAdd(orderItem);
-        } else {
-            return "Invalid side parameter. Must be 'Buy' or 'Sell'.";
-        }
-
-        // Other parameters can be used for additional processing logic.
-
-        return "Order created successfully";
+    private List<OrderBookResponse.Position> formatOrderBookData(Map<BigDecimal, List<Order>> data, Comparator<BigDecimal> comparator, int limit) {
+        return data.entrySet().stream()
+                .map(e -> new OrderBookResponse.Position(
+                        e.getKey(),
+                        BigDecimal.valueOf(
+                                e.getValue()
+                                        .stream()
+                                        .map(Order::getQuantity)
+                                        .reduce(0, Integer::sum))))
+                .sorted(Comparator.comparing(OrderBookResponse.Position::price, comparator))
+                .limit(limit).toList();
     }
 
-    @GetMapping("/list")
-    public List<Order> getOrderList(@RequestParam(required = false) String symbol,
-                                    @RequestParam(required = false) String orderId,
-                                    @RequestParam(required = false) String orderLinkId,
-                                    @RequestParam(required = false) String copyTradeOrderType) {
-
-        // Get the orders based on the symbol
-        List<Order> orders = market.getOrders(symbol);
-
-        return orders;
+    @GetMapping("/orderbook")
+    public OrderBookResponse getOrderBook(@RequestParam String symbol, @RequestParam(defaultValue = "25") int limit) {
+        if (limit < 1 || limit > 50) {
+            throw new IllegalArgumentException("Limit is out of bounds");
+        }
+        if (!marketList.isValidSymbol(symbol)) {
+            throw new IllegalArgumentException("symbol %s does not exists".formatted(symbol));
+        }
+        return new OrderBookResponse(symbol,
+                formatOrderBookData(marketList.getBidMap(symbol), Comparator.reverseOrder(), limit),
+                formatOrderBookData(marketList.getOfferMap(symbol), Comparator.naturalOrder(), limit),
+                System.currentTimeMillis());
     }
 
 }

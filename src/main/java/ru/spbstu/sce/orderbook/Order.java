@@ -1,15 +1,17 @@
 package ru.spbstu.sce.orderbook;
 
+import java.math.BigDecimal;
+
 public class Order {
-    private double price;
+    private BigDecimal price;
     public int quantity;
 
-    public Order(double price, int quantity) {
+    public Order(BigDecimal price, int quantity) {
         this.price = price;
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -17,7 +19,7 @@ public class Order {
         return quantity;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
