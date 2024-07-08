@@ -2,8 +2,8 @@ package ru.spbstu.sce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.spbstu.sce.user.wallet.CoinWalletBalance;
-import ru.spbstu.sce.user.wallet.WalletService;
+import ru.spbstu.sce.db.entity.user.wallet.CoinWalletBalance;
+import ru.spbstu.sce.db.entity.user.wallet.WalletService;
 
 import java.util.Arrays;
 import java.util.Collections;
