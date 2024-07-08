@@ -30,7 +30,7 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton style={{ backgroundColor: '#282c34', borderBottom: '1px solid #444' }}>
-          <Modal.Title style={{ color: 'white' }}>Order Form</Modal.Title>
+          <Modal.Title style={{ color: 'white' }}>Place order for {symbol}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: '#282c34', color: 'white' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
