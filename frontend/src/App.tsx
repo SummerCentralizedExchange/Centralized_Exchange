@@ -1,10 +1,12 @@
 import { createChart, ColorType} from "lightweight-charts";
-import React, { useEffect, useRef } from 'react';
-import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
+import React, { useEffect, useRef, useState } from 'react';
+import SymbolHeader from "./SymbolHeader/SymbolHeader";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const [symbol, setSymbol] = useState<string>('BTCUSDT'); { /* TODO: now we use default `BTCUSDT`, but should make request to server with getting some symbol */}
 
   useEffect(() => {
     console.log("Render")
@@ -55,8 +57,9 @@ export default function App() {
   };
 
   return (
-    <div ref={chartContainerRef}>
-      <StyledOrderBook book={book} />
+    <div>
+      <SymbolHeader symbol={symbol} />
+      <div ref={chartContainerRef}> </div>
     </div>
   );
 }
