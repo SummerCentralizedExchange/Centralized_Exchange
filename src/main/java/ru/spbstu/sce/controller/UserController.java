@@ -11,10 +11,4 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-//    @PostMapping("/create")
-//    public SinginRequest createUser(@RequestBody SingupRequest request) {
-//        User user = userService.createUser(request);
-//        return new SinginRequest(user.getUser_id(), user.getApiKey());
-//    }
 }

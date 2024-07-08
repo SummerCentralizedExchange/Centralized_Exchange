@@ -1,7 +1,6 @@
-package ru.spbstu.sce.accessControl;
+package ru.spbstu.sce.accesscontrol;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +16,11 @@ import java.io.IOException;
 
 @Component
 public class TokenFilter extends OncePerRequestFilter {
-    private final JwtCore jwtCore;
+    private final TokenProvider jwtCore;
     private final UserDetailsService userService;
 
-    public TokenFilter(JwtCore jwtCore, UserDetailsService userService) {
-        this.jwtCore = jwtCore;
+    public TokenFilter(TokenProvider tokenProvider, UserDetailsService userService) {
+        this.jwtCore = tokenProvider;
         this.userService = userService;
     }
 

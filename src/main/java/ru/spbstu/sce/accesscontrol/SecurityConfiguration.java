@@ -1,4 +1,4 @@
-package ru.spbstu.sce.accessControl;
+package ru.spbstu.sce.accesscontrol;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +19,12 @@ import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfigurator {
+public class SecurityConfiguration {
 
     private final TokenFilter tokenFilter;
 
     @Autowired
-    public SecurityConfigurator(TokenFilter tokenFilter) {
+    public SecurityConfiguration(TokenFilter tokenFilter) {
         this.tokenFilter = tokenFilter;
     }
 

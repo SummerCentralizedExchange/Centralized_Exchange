@@ -9,7 +9,6 @@ import ru.spbstu.sce.service.Greeting;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/secured")
 public class GreetingController {
 
     private static final String template = "Hello, %s!";
@@ -19,7 +18,7 @@ public class GreetingController {
         return new Greeting(String.format(template, name));
     }
 
-    @GetMapping("/user")
+    @GetMapping("/secured/user")
     public String userAccess(Principal principal) {
         if (principal != null) {
             return principal.getName();

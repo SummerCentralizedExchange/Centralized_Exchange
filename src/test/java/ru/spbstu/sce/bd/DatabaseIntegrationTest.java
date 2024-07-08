@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import ru.spbstu.sce.db.entity.*;
 import ru.spbstu.sce.db.entity.user.User;
-import ru.spbstu.sce.db.repositorys.*;
+import ru.spbstu.sce.db.repositories.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

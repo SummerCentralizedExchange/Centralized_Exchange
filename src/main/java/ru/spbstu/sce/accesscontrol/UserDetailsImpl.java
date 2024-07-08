@@ -1,4 +1,4 @@
-package ru.spbstu.sce.accessControl;
+package ru.spbstu.sce.accesscontrol;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

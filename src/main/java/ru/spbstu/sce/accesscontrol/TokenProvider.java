@@ -1,4 +1,4 @@
-package ru.spbstu.sce.accessControl;
+package ru.spbstu.sce.accesscontrol;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,8 +15,8 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JwtCore {
-    private final Logger logger = LoggerFactory.getLogger(JwtCore.class);
+public class TokenProvider {
+    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     @Value("${server.app.secret}")
     private String secretKey;

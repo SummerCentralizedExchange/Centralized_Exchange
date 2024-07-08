@@ -11,11 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.spbstu.sce.accessControl.JwtCore;
+import ru.spbstu.sce.accesscontrol.TokenProvider;
 import ru.spbstu.sce.db.entity.user.SinginRequest;
 import ru.spbstu.sce.db.entity.user.SignupRequest;
 import ru.spbstu.sce.db.entity.user.User;
-import ru.spbstu.sce.db.repositorys.UserRepository;
+import ru.spbstu.sce.db.repositories.UserRepository;
 
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ public class SecurityController {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
-    private JwtCore jwtCore;
+    private TokenProvider tokenProvider;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -48,8 +48,8 @@ public class SecurityController {
     }
 
     @Autowired
-    public void setJwtCore(JwtCore jwtCore) {
-        this.jwtCore = jwtCore;
+    public void setJwtCore(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/signup")
@@ -84,7 +84,7 @@ public class SecurityController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String apikey = jwtCore.generateToken(authentication);
+        String apikey = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(apikey);
     }
 

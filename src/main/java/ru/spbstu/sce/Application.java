@@ -18,6 +18,4 @@ public class Application {
     public WebServerFactoryCustomizer<TomcatServletWebServerFactory> containerCustomizer() {
         return (container -> container.setPort(8081));
     }
-
-
 }
