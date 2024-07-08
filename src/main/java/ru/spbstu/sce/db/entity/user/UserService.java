@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.spbstu.sce.db.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -19,7 +20,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), Collections.emptyList());
     }
 
 }

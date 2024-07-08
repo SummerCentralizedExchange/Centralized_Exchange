@@ -19,7 +19,6 @@ public class User {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    // ?@NotBlank(message = "API Key cannot be empty")
     @Column(unique = true, nullable = false)
     private String apiKey;
     
