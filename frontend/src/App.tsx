@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import SymbolHeader from "./SymbolHeader/SymbolHeader";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
+import OrderForm from "./OrderForm/OrderForm";
 
 export default function App() {
 
@@ -58,9 +59,10 @@ export default function App() {
   };
 
   return (
-    <div>
+    <div style={{backgroundColor:'#282c34'}}>
       <SymbolHeader symbol={symbol} />
       <StyledOrderBook book={book}/>
+      <OrderForm symbol={symbol}/>
       <div ref={chartContainerRef}> </div>
     </div>
   );
