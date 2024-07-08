@@ -2,6 +2,7 @@ import { createChart, ColorType} from "lightweight-charts";
 import React, { useEffect, useRef, useState } from 'react';
 import SymbolHeader from "./SymbolHeader/SymbolHeader";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 
 export default function App() {
 
@@ -59,6 +60,7 @@ export default function App() {
   return (
     <div>
       <SymbolHeader symbol={symbol} />
+      <StyledOrderBook book={book}/>
       <div ref={chartContainerRef}> </div>
     </div>
   );
