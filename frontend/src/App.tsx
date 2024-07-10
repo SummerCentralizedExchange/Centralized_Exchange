@@ -4,6 +4,7 @@ import SymbolHeader from "./SymbolHeader/SymbolHeader";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 import OrderForm from "./OrderForm/OrderForm";
+const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
 export default function App() {
 
