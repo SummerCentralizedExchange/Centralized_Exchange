@@ -31,7 +31,7 @@ export default function App() {
     fetchOrderBook();
 
     // Interval to requesting data.
-    const intervalId = setInterval(fetchOrderBook, 5000); // 5000 ms = 5 second.
+    const intervalId = setInterval(fetchOrderBook, 1000); // 5000 ms = 5 second.
 
     // Clear interval.
     return () => clearInterval(intervalId);

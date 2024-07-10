@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, Modal } from 'react-bootstrap';
+import axios from 'axios';
 
 type FormValues = {
   type: 'Buy' | 'Sell';
   quantity: number;
   price: number;
 };
+
+const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
 export default function OrderFormModal({symbol}:{symbol:string}) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
@@ -15,8 +18,29 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
-    console.log({orderType:'Limit', symbol:symbol, ...data});
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const postData = {
+      symbol: symbol,
+      orderType: 'Limit',
+      ...data
+    };
+    console.log(`sending post request: ${JSON.stringify(postData)}`);
+    
+    try {
+      const response = await axios.post(`${SERVER_ADDRESS}/order/create`, postData);
+      console.log('Order created:', response.data);
+
+      if (response.status === 200) {
+        window.alert('Успешно! Запрос выполнен.');
+      } else {
+        window.alert('Произошла ошибка при выполнении запроса.');
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
+
+    
+
     handleClose();
   };
 
