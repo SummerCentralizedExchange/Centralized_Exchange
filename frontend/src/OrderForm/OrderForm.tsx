@@ -31,9 +31,9 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
       console.log('Order created:', response.data);
 
       if (response.status === 200) {
-        window.alert('Успешно! Запрос выполнен.');
+        window.alert('Success! Order created.');
       } else {
-        window.alert('Произошла ошибка при выполнении запроса.');
+        window.alert('Error with creating order.');
       }
     } catch (error) {
       console.error('Error creating order:', error);
