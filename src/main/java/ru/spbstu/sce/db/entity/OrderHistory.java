@@ -9,18 +9,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "order_history")
 public class OrderHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderHistory_id;
+    private long orderHistoryId;
 
     @Column(precision = 38, scale = 10)
     private BigDecimal price;
 
     @Column(precision = 38, scale = 10)
     private BigDecimal quantity;
+
     private LocalDateTime timestamp;
+
     private String side;
 
     @ManyToOne

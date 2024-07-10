@@ -9,9 +9,9 @@ import lombok.Data;
 public class Coin{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coin_id;
+    private long coinId;
 
     @Column(unique = true, nullable = false)
-    private String coin_name;
+    private String coinName;
 
 }

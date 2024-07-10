@@ -1,36 +1,25 @@
 package ru.spbstu.sce.db.entity;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Arrays;
 
+@Getter
 @Embeddable
 public class UserBalanceId implements Serializable {
-    private Long user_id;
-    private Long coin_id;
 
-    public UserBalanceId() {}
+    private long userId;
 
-    public UserBalanceId(Long user_id, Long coin_id) {
-        this.user_id = user_id;
-        this.coin_id = coin_id;
+    private long coinId;
+
+    public UserBalanceId() {
     }
 
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
-
-    public Long getCoin_id() {
-        return coin_id;
-    }
-
-    public void setCoin_id(Long coin_id) {
-        this.coin_id = coin_id;
+    public UserBalanceId(long userId, long coinId) {
+        this.userId = userId;
+        this.coinId = coinId;
     }
 
     @Override
@@ -38,11 +27,11 @@ public class UserBalanceId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserBalanceId that = (UserBalanceId) o;
-        return Objects.equals(user_id, that.user_id) && Objects.equals(coin_id, that.coin_id);
+        return userId == that.userId && coinId == that.coinId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user_id, coin_id);
+        return Arrays.hashCode(new long[]{userId, coinId});
     }
 }
