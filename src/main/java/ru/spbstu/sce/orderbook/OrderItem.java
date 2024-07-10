@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class OrderItem {
     private String symbol;
     private BigDecimal price;
-    private int quantity;
+    private BigDecimal quantity;
     private String type;
     private String transactionType;
 
@@ -17,7 +17,7 @@ public class OrderItem {
         return price;
     }
 
-    public int getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
@@ -37,7 +37,7 @@ public class OrderItem {
         this.price = price;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

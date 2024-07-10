@@ -14,7 +14,7 @@ public class MainTest {
     public void addNewBid(){
         market = new OrderBook("BTCUSDT");
         assertTrue(market.getBidMap().isEmpty());
-        market.addBid(BigDecimal.valueOf(69.0), 1);
+        market.addBid(BigDecimal.valueOf(69.0), BigDecimal.valueOf(1));
         assertTrue(market.getBidMap().containsKey(BigDecimal.valueOf(69.0)));
     }
 

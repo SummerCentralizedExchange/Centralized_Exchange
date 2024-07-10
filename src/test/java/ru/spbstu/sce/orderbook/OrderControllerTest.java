@@ -51,7 +51,7 @@ public class OrderControllerTest {
 
     @Test
     public void testGetOrderList() throws Exception {
-        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(BigDecimal.valueOf(10000), 1)));
+        when(market.getOrders(anyString())).thenReturn(Collections.singletonList(new Order(BigDecimal.valueOf(10000), BigDecimal.valueOf(1))));
 
         mockMvc.perform(get("/order/list")
                         .param("symbol", "BTCUSDT"))

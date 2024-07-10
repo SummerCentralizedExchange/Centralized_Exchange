@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class Order {
     private BigDecimal price;
-    public int quantity;
+    public BigDecimal quantity;
 
-    public Order(BigDecimal price, int quantity) {
+    public Order(BigDecimal price, BigDecimal quantity) {
         this.price = price;
         this.quantity = quantity;
     }
@@ -15,7 +15,7 @@ public class Order {
         return price;
     }
 
-    public int getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
@@ -23,7 +23,7 @@ public class Order {
         this.price = price;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
