@@ -19,9 +19,9 @@ public class OrderController {
     public String createOrder(@RequestBody OrderItem orderItem) {
 
         // We determine the type of operation (purchase or sale)
-        if (orderItem.getTransactionType().equalsIgnoreCase("Buy")) {
+        if (orderItem.getSide().equalsIgnoreCase("Buy")) {
             market.bidAdd(orderItem);
-        } else if (orderItem.getTransactionType().equalsIgnoreCase("Sell")) {
+        } else if (orderItem.getSide().equalsIgnoreCase("Sell")) {
             market.offerAdd(orderItem);
         } else {
             return "Invalid side parameter. Must be 'Buy' or 'Sell'.";

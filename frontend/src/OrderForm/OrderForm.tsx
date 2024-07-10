@@ -4,7 +4,7 @@ import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 type FormValues = {
-  transactionType: 'Buy' | 'Sell';
+  side: 'Buy' | 'Sell';
   quantity: number;
   price: number;
 };
@@ -60,11 +60,11 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label htmlFor="type">Type:</label>
-              <select id="type" className="form-control" {...register("transactionType", { required: true })}>
+              <select id="type" className="form-control" {...register("side", { required: true })}>
                 <option value="Buy">Buy</option>
                 <option value="Sell">Sell</option>
               </select>
-              {errors.transactionType && <span className="text-danger">This field is required</span>}
+              {errors.side && <span className="text-danger">This field is required</span>}
             </div>
 
             <div className="form-group">
