@@ -27,50 +27,34 @@ import org.slf4j.LoggerFactory;
 public class SecurityController {
     private final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
     private TokenProvider tokenProvider;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    @Autowired
-    public void setJwtCore(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
 
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
-        if (userRepository.existsByLogin(signupRequest.getUserName())) {
-            logger.info("User {} already exists", signupRequest.getUserName());
+        if (userRepository.existsByLogin(signupRequest.username())) {
+            logger.info("User {} already exists", signupRequest.username());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Choose different name");
+        }
+        if (signupRequest.username().isEmpty()) {
+            return ResponseEntity.badRequest().body("Username cannot be empty");
+        }
+        if (signupRequest.password().isEmpty()) {
+            return ResponseEntity.badRequest().body("Password cannot be empty");
         }
 
         String apiKey = UUID.randomUUID().toString();
-        logger.info("Creating new user {}", signupRequest.getUserName());
-        String encodedPassword = passwordEncoder.encode(signupRequest.getPassword());
-
-        User user = new User();
-        user.setLogin(signupRequest.getUserName());
-        user.setPassword(encodedPassword);
-        user.setApiKey(apiKey);
-        userRepository.save(user);
-        logger.info("User {} created", signupRequest.getUserName());
-
-        return ResponseEntity.ok("Success, baby");
+        logger.info("Creating new user {}", signupRequest.username());
+        String encodedPassword = passwordEncoder.encode(signupRequest.password());
+        userRepository.save(new User(signupRequest.username(), encodedPassword, apiKey));
+        logger.info("User {} created", signupRequest.username());
+        return ResponseEntity.ok("User created successfully");
     }
 
     @PostMapping("/signin")
