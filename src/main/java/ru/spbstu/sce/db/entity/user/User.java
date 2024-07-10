@@ -10,7 +10,7 @@ import lombok.Data;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long userId;
 
     @NotBlank(message = "Login cannot be empty")
     @Column(unique = true, nullable = false)
