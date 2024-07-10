@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "\"user\"") /*use additional \"\" to differ from postgre USER */
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
