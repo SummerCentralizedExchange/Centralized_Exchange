@@ -17,6 +17,7 @@ import ru.spbstu.sce.db.entity.user.SignupRequest;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.repositories.UserRepository;
 
+import java.time.Instant;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,8 @@ public class SecurityController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String apikey = tokenProvider.generateToken(authentication);
+        Instant now = Instant.now();
+        String apikey = tokenProvider.generateToken(authentication, now);
         return ResponseEntity.ok(apikey);
     }
 
