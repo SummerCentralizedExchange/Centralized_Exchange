@@ -60,12 +60,12 @@ class MarketControllerTest {
             var item = new OrderItem();
             item.setSymbol(THE_SYMBOL);
             item.setPrice(BigDecimal.valueOf(500000 - 1 - i));
-            item.setQuantity(1);
+            item.setQuantity(BigDecimal.valueOf(1));
             myMarket.bidAdd(item);
             var item2 = new OrderItem();
             item2.setSymbol(THE_SYMBOL);
             item2.setPrice(BigDecimal.valueOf(500000 + i));
-            item2.setQuantity(1);
+            item2.setQuantity(BigDecimal.valueOf(1));
             myMarket.offerAdd(item2);
         }
         return myMarket;

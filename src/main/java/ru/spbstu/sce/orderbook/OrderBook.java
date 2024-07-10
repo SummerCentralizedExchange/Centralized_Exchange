@@ -27,7 +27,7 @@ public class OrderBook {
         offerMinPriceList = new PriorityQueue<>();
     }
 
-    public void addBid(BigDecimal price, int quantity) {
+    public void addBid(BigDecimal price, BigDecimal quantity) {
         Order order = new Order(price, quantity);
 
         List<Order> orders = getOrders(bidMap, price);
@@ -41,7 +41,7 @@ public class OrderBook {
         logger.info("addBid: price {}", price);
     }
 
-    public void addOffer(BigDecimal price, int quantity) {
+    public void addOffer(BigDecimal price, BigDecimal quantity) {
         Order order = new Order(price, quantity);
 
         List<Order> orders = getOrders(offerMap, price);
@@ -77,16 +77,16 @@ public class OrderBook {
                 Order bidOrder = bidOrders.get(0);
                 Order offerOrder = offerOrders.get(0);
 
-                int bidQuantity = bidOrder.getQuantity();
-                int offerQuantity = offerOrder.getQuantity();
+                BigDecimal bidQuantity = bidOrder.getQuantity();
+                BigDecimal offerQuantity = offerOrder.getQuantity();
 
                 // If the quantity in the purchase order is greater than the quantity in the sale order
-                if (bidQuantity > offerQuantity) {
+                if (bidQuantity.compareTo(offerQuantity) > 0) {
                     logger.info("bidQuantity > offerQuantity");
                     logger.info(makeSuccessfulTradeInfo(offerQuantity, lowestOffer));
 
                     // Reducing the quantity in the purchase request
-                    bidOrder.setQuantity(bidQuantity - offerQuantity);
+                    bidOrder.setQuantity(bidQuantity.subtract(offerQuantity));
                     logger.info("bidQuantity remaining quantity : {}", bidQuantity);
 
                     // Closing the previous sale request
@@ -96,11 +96,11 @@ public class OrderBook {
                     }
                 }
                 // If the quantity in the sales order is greater than the quantity in the purchase order
-                else if (offerQuantity > bidQuantity) {
+                else if (offerQuantity.compareTo(bidQuantity) > 0) {
                     logger.info("bidQuantity < offerQuantity");
                     logger.info(makeSuccessfulTradeInfo(bidQuantity, highestBid));
 
-                    offerOrder.setQuantity(offerQuantity - bidQuantity);
+                    offerOrder.setQuantity(offerQuantity.subtract(bidQuantity));
                     logger.info("offerQuantity remaining quantity : {}", offerQuantity);
 
                     bidOrders.remove(0);
@@ -129,7 +129,7 @@ public class OrderBook {
     }
 
 
-    private String makeSuccessfulTradeInfo(int offerQuantity, BigDecimal lowestOffer) {
+    private String makeSuccessfulTradeInfo(BigDecimal offerQuantity, BigDecimal lowestOffer) {
         logger.info("successfulTrade bidQuantity : {}", offerQuantity);
         logger.info("successfulTrade lowestOffer : {}", lowestOffer);
 

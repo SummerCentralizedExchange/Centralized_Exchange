@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @Component
 public class TokenFilter extends OncePerRequestFilter {
+    // TODO consider use of org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter
     private final TokenProvider jwtCore;
     private final UserDetailsService userService;
 

@@ -11,7 +11,6 @@ import ru.spbstu.sce.orderbook.OrderBookResponse;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/market")
@@ -24,11 +23,10 @@ public class MarketController {
         return data.entrySet().stream()
                 .map(e -> new OrderBookResponse.Position(
                         e.getKey(),
-                        BigDecimal.valueOf(
-                                e.getValue()
-                                        .stream()
-                                        .map(Order::getQuantity)
-                                        .reduce(0, Integer::sum))))
+                        e.getValue()
+                                .stream()
+                                .map(Order::getQuantity)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)))
                 .sorted(Comparator.comparing(OrderBookResponse.Position::price, comparator))
                 .limit(limit).toList();
     }
