@@ -4,14 +4,43 @@ import SymbolHeader from "./SymbolHeader/SymbolHeader";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 import OrderForm from "./OrderForm/OrderForm";
+import axios from 'axios';
+
+const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
 export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [symbol, setSymbol] = useState<string>('BTCUSDT'); { /* TODO: now we use default `BTCUSDT`, but should make request to server with getting some symbol */}
+  const [symbol, setSymbol] = useState<string>('Test'); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
+  const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [['1.01', '2'],['1.02', '3'],],bids: [['0.99', '5'],['0.98', '3'],],});
+  
+  //
+  useEffect(() => {
+    const fetchOrderBook = async () => {
+      try {
+        const response = await axios.get(`${SERVER_ADDRESS}/market/orderbook?symbol=${symbol}`);
+        console.log(response.data);
+        setOrderBookData({bids:response.data.bids, asks:response.data.asks});
+        console.log(orderBookData);
+      } catch (error) {
+        console.error('Error fetching order book:', error);
+      }
+    };
+
+    // First call to monting component.
+    fetchOrderBook();
+
+    // Interval to requesting data.
+    const intervalId = setInterval(fetchOrderBook, 1000); // 5000 ms = 5 second.
+
+    // Clear interval.
+    return () => clearInterval(intervalId);
+  }, []);
+  //
+
 
   useEffect(() => {
-    console.log("Render")
+    console.log("Render");
 
     if (chartContainerRef.current === null) {
       throw Error();
@@ -47,21 +76,10 @@ export default function App() {
     return () => {chart.remove();};
   }, []);
 
-  const book = {
-    asks: [
-      ['1.01', '2'],
-      ['1.02', '3'],
-    ],
-    bids: [
-      ['0.99', '5'],
-      ['0.98', '3'],
-    ],
-  };
-
   return (
     <div style={{backgroundColor:'#282c34'}}>
       <SymbolHeader symbol={symbol} />
-      <StyledOrderBook book={book}/>
+      <StyledOrderBook book={orderBookData}/>
       <OrderForm symbol={symbol}/>
       <div ref={chartContainerRef}> </div>
     </div>
