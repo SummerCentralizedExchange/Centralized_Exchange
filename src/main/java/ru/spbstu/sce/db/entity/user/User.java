@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "\"user\"")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,6 @@ public class User {
     
     @NotBlank(message = "Password cannot be empty")
     private String password;
-
-    @Column(unique = true, nullable = false)
-    private String apiKey;
     
     @Transient
     private String passwordConfirm;
@@ -28,11 +25,8 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, String apiKey) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.apiKey = apiKey;
     }
-
-
 }
