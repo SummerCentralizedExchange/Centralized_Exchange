@@ -1,8 +1,10 @@
 package ru.spbstu.sce.accesscontrol;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
 
 @Slf4j
@@ -21,26 +25,24 @@ public class TokenProvider {
     @Value("${server.app.secret}")
     private String secretKey;
     @Value("${server.app.lifetime}")
-    private int lifetime;
+    private int tokenLifetimeMs;
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, Instant issuedAt) {
         logger.info("return value of principal {}", authentication.getPrincipal());
-        User userDetails = (User) authentication.getPrincipal();
-
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + lifetime))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+        User user = (User) authentication.getPrincipal();
+        JwtBuilder builder = Jwts.builder()
+                .subject(user.getUsername())
+                .issuedAt(Date.from(issuedAt))
+                .expiration(Date.from(issuedAt.plusMillis(tokenLifetimeMs)))
+                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)));
+        return builder.compact();
     }
 
     public String getNameFromJwt(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        JwtParser parser = Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .build();
+        Claims claims = parser.parseSignedClaims(token).getPayload();
         return claims.getSubject();
     }
 }

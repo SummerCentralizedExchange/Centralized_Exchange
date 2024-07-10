@@ -17,7 +17,8 @@ import ru.spbstu.sce.db.entity.user.SignupRequest;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.repositories.UserRepository;
 
-import java.util.UUID;
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,11 +49,9 @@ public class SecurityController {
         if (signupRequest.password().isEmpty()) {
             return ResponseEntity.badRequest().body("Password cannot be empty");
         }
-
-        String apiKey = UUID.randomUUID().toString();
         logger.info("Creating new user {}", signupRequest.username());
         String encodedPassword = passwordEncoder.encode(signupRequest.password());
-        userRepository.save(new User(signupRequest.username(), encodedPassword, apiKey));
+        userRepository.save(new User(signupRequest.username(), encodedPassword));
         logger.info("User {} created", signupRequest.username());
         return ResponseEntity.ok("User created successfully");
     }
@@ -68,7 +67,8 @@ public class SecurityController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String apikey = tokenProvider.generateToken(authentication);
+        Instant now = Instant.now();
+        String apikey = tokenProvider.generateToken(authentication, now);
         return ResponseEntity.ok(apikey);
     }
 

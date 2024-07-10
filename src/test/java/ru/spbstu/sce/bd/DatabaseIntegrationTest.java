@@ -36,10 +36,9 @@ public class DatabaseIntegrationTest {
         User user = new User();
         user.setLogin("testUser");
         user.setPassword("password");
-        user.setApiKey("apikey123");
         userRepository.save(user);
 
-        Optional<User> foundUser = userRepository.findById(user.getUser_id());
+        Optional<User> foundUser = userRepository.findById(user.getUserId());
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get().getLogin()).isEqualTo("testUser");
     }
@@ -60,14 +59,13 @@ public class DatabaseIntegrationTest {
         User user = new User();
         user.setLogin("testUser");
         user.setPassword("password");
-        user.setApiKey("apikey123");
         userRepository.save(user);
 
         Coin coin = new Coin();
         coin.setCoinName("BTC");
         coinRepository.save(coin);
 
-        UserBalanceId userBalanceId = new UserBalanceId(user.getUser_id(), coin.getCoinId());
+        UserBalanceId userBalanceId = new UserBalanceId(user.getUserId(), coin.getCoinId());
         UserBalance userBalance = new UserBalance();
         userBalance.setId(userBalanceId);
         userBalance.setUser(user);
@@ -85,7 +83,6 @@ public class DatabaseIntegrationTest {
         User user = new User();
         user.setLogin("testUser");
         user.setPassword("password");
-        user.setApiKey("apikey123");
         userRepository.save(user);
 
         Coin baseCoin = new Coin();
