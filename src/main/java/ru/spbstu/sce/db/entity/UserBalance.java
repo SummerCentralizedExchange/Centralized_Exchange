@@ -8,19 +8,18 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-@Table(name = "user_balance")
 public class UserBalance {
 
     @EmbeddedId
     private UserBalanceId id;
 
     @ManyToOne
-    @MapsId("user_id")
+    @MapsId("userId")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @MapsId("coin_id")
+    @MapsId("coinId")
     @JoinColumn(name = "coin_id")
     private Coin coin;
 

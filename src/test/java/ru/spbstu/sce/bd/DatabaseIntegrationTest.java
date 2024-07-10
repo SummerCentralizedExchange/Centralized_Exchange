@@ -47,12 +47,12 @@ public class DatabaseIntegrationTest {
     @Test
     public void testCreateCoin() {
         Coin coin = new Coin();
-        coin.setCoin_name("BTC");
+        coin.setCoinName("BTC");
         coinRepository.save(coin);
 
-        Optional<Coin> foundCoin = coinRepository.findById(coin.getCoin_id());
+        Optional<Coin> foundCoin = coinRepository.findById(coin.getCoinId());
         assertThat(foundCoin).isPresent();
-        assertThat(foundCoin.get().getCoin_name()).isEqualTo("BTC");
+        assertThat(foundCoin.get().getCoinName()).isEqualTo("BTC");
     }
 
     @Test
@@ -64,10 +64,10 @@ public class DatabaseIntegrationTest {
         userRepository.save(user);
 
         Coin coin = new Coin();
-        coin.setCoin_name("BTC");
+        coin.setCoinName("BTC");
         coinRepository.save(coin);
 
-        UserBalanceId userBalanceId = new UserBalanceId(user.getUser_id(), coin.getCoin_id());
+        UserBalanceId userBalanceId = new UserBalanceId(user.getUser_id(), coin.getCoinId());
         UserBalance userBalance = new UserBalance();
         userBalance.setId(userBalanceId);
         userBalance.setUser(user);
@@ -89,11 +89,11 @@ public class DatabaseIntegrationTest {
         userRepository.save(user);
 
         Coin baseCoin = new Coin();
-        baseCoin.setCoin_name("BTC");
+        baseCoin.setCoinName("BTC");
         coinRepository.save(baseCoin);
 
         Coin quoteCoin = new Coin();
-        quoteCoin.setCoin_name("ETH");
+        quoteCoin.setCoinName("ETH");
         coinRepository.save(quoteCoin);
 
         OrderHistory orderHistory = new OrderHistory();
@@ -106,7 +106,7 @@ public class DatabaseIntegrationTest {
         orderHistory.setQuoteCoin(quoteCoin);
         orderHistoryRepository.save(orderHistory);
 
-        Optional<OrderHistory> foundOrderHistory = orderHistoryRepository.findById(orderHistory.getOrderHistory_id());
+        Optional<OrderHistory> foundOrderHistory = orderHistoryRepository.findById(orderHistory.getOrderHistoryId());
         assertThat(foundOrderHistory).isPresent();
         assertThat(foundOrderHistory.get().getPrice()).isEqualByComparingTo(BigDecimal.valueOf(50000.00));
 
