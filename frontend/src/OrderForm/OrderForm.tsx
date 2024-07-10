@@ -4,7 +4,7 @@ import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 type FormValues = {
-  type: 'Buy' | 'Sell';
+  transactionType: 'Buy' | 'Sell';
   quantity: number;
   price: number;
 };
@@ -21,7 +21,7 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const postData = {
       symbol: symbol,
-      orderType: 'Limit',
+      type: 'Limit',
       ...data
     };
     console.log(`sending post request: ${JSON.stringify(postData)}`);
@@ -60,11 +60,11 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group">
               <label htmlFor="type">Type:</label>
-              <select id="type" className="form-control" {...register("type", { required: true })}>
+              <select id="type" className="form-control" {...register("transactionType", { required: true })}>
                 <option value="Buy">Buy</option>
                 <option value="Sell">Sell</option>
               </select>
-              {errors.type && <span className="text-danger">This field is required</span>}
+              {errors.transactionType && <span className="text-danger">This field is required</span>}
             </div>
 
             <div className="form-group">

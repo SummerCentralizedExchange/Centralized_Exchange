@@ -37,11 +37,6 @@ public class OrderControllerTest {
     @Test
     public void testCreateOrder() throws Exception {
         mockMvc.perform(post("/order/create")
-                        .param("category", "crypto")
-                        .param("symbol", "BTCUSDT")
-                        .param("side", "Buy")
-                        .param("orderType", "Limit")
-                        .param("qty", "1")
                         .contentType("application/json")
                         .content("{\"coinName\":\"BTCUSDT\",\"price\":10000,\"quantity\":1,\"type\":\"Limit\",\"transactionType\":\"Buy\"}"))
                 .andExpect(status().isOk());

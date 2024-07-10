@@ -16,41 +16,12 @@ public class OrderController {
     private MarketList market;
 
     @PostMapping("/create")
-    public String createOrder(@RequestBody OrderItem orderItem,
-                              @RequestParam String category,
-                              @RequestParam String symbol,
-                              @RequestParam(required = false) Integer isLeverage,
-                              @RequestParam String side,
-                              @RequestParam String orderType,
-                              @RequestParam double qty,
-                              @RequestParam(required = false) String marketUnit,
-                              @RequestParam(required = false) String price,
-                              @RequestParam(required = false) Integer triggerDirection,
-                              @RequestParam(required = false) String orderFilter,
-                              @RequestParam(required = false) String triggerPrice,
-                              @RequestParam(required = false) String triggerBy,
-                              @RequestParam(required = false) String orderIv,
-                              @RequestParam(required = false) String timeInForce,
-                              @RequestParam(required = false) Integer positionIdx,
-                              @RequestParam(required = false) String orderLinkId,
-                              @RequestParam(required = false) String takeProfit,
-                              @RequestParam(required = false) String stopLoss,
-                              @RequestParam(required = false) String tpTriggerBy,
-                              @RequestParam(required = false) String slTriggerBy,
-                              @RequestParam(required = false) Boolean reduceOnly,
-                              @RequestParam(required = false) Boolean closeOnTrigger,
-                              @RequestParam(required = false) String smpType,
-                              @RequestParam(required = false) Boolean mmp,
-                              @RequestParam(required = false) String tpslMode,
-                              @RequestParam(required = false) String tpLimitPrice,
-                              @RequestParam(required = false) String slLimitPrice,
-                              @RequestParam(required = false) String tpOrderType,
-                              @RequestParam(required = false) String slOrderType) {
+    public String createOrder(@RequestBody OrderItem orderItem) {
 
         // We determine the type of operation (purchase or sale)
-        if (side.equalsIgnoreCase("Buy")) {
+        if (orderItem.getTransactionType().equalsIgnoreCase("Buy")) {
             market.bidAdd(orderItem);
-        } else if (side.equalsIgnoreCase("Sell")) {
+        } else if (orderItem.getTransactionType().equalsIgnoreCase("Sell")) {
             market.offerAdd(orderItem);
         } else {
             return "Invalid side parameter. Must be 'Buy' or 'Sell'.";
