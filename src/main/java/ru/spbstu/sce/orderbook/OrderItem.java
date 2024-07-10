@@ -7,7 +7,7 @@ public class OrderItem {
     private BigDecimal price;
     private BigDecimal quantity;
     private String type;
-    private String transactionType;
+    private String side;
 
     public String getSymbol() {
         return symbol;
@@ -25,8 +25,8 @@ public class OrderItem {
         return type;
     }
 
-    public String getTransactionType() {
-        return transactionType;
+    public String getSide() {
+        return side;
     }
 
     public void setSymbol(String symbol) {
@@ -45,7 +45,7 @@ public class OrderItem {
         this.type = type;
     }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
+    public void setSide(String side) {
+        this.side = side;
     }
 }
