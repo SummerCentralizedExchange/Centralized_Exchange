@@ -21,8 +21,9 @@ public interface UserBalanceRepository extends JpaRepository<UserBalance, Long> 
     List<CoinWalletBalance> findByUserLogin(String login);
 
     @Query("""
-            select new ru.spbstu.sce.db.entity.user.wallet.CoinWalletBalance(b.coin.coinName, b.amount)
-            from UserBalance b
-            where b.user.login = :login and b.coin.coinName in :coinNames""")
+            select new ru.spbstu.sce.db.entity.user.wallet.CoinWalletBalance(c.coinName, coalesce(b.amount, 0) )
+            from Coin c
+            left join UserBalance b on c.coinId = b.coin.coinId and b.user.login = :login
+            where c.coinName in :coinNames""")
     List<CoinWalletBalance> findByUserLoginAndCoinNames(String login, List<String> coinNames);
 }
