@@ -1,0 +1,155 @@
+#databaseChangeLog:
+#  - changeSet:
+#      id: 1
+#      author: user
+#      changes:
+#        - createTable:
+#            tableName: coin
+#            columns:
+#              - column:
+#                  name: coin_id
+#                  type: BIGINT
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: coin_name
+#                  type: VARCHAR(255)
+#                  constraints:
+#                    nullable: false
+#                    unique: true
+#  - changeSet:
+#      id: 2
+#      author: user
+#      changes:
+#        - createTable:
+#            tableName: "user"
+#            columns:
+#              - column:
+#                  name: user_id
+#                  type: BIGINT
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: login
+#                  type: VARCHAR(255)
+#                  constraints:
+#                    nullable: false
+#                    unique: true
+#              - column:
+#                  name: password
+#                  type: VARCHAR(255)
+#                  constraints:
+#                    nullable: false
+#  - changeSet:
+#      id: 3
+#      author: user
+#      changes:
+#        - createTable:
+#            tableName: order_history
+#            columns:
+#              - column:
+#                  name: order_history_id
+#                  type: BIGINT
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: price
+#                  type: DECIMAL(38, 10)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: quantity
+#                  type: DECIMAL(38, 10)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: timestamp
+#                  type: TIMESTAMP
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: side
+#                  type: VARCHAR(10)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: base_coin
+#                  type: BIGINT
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: quote_coin
+#                  type: BIGINT
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: user_id
+#                  type: BIGINT
+#                  constraints:
+#                    nullable: false
+#            foreignKeys:
+#              - foreignKeyConstraintName: fk_order_history_base_coin
+#                baseTableName: order_history
+#                baseColumnNames: base_coin
+#                referencedTableName: coin
+#                referencedColumnNames: coin_id
+#                onDelete: CASCADE
+#              - foreignKeyConstraintName: fk_order_history_quote_coin
+#                baseTableName: order_history
+#                baseColumnNames: quote_coin
+#                referencedTableName: coin
+#                referencedColumnNames: coin_id
+#                onDelete: CASCADE
+#              - foreignKeyConstraintName: fk_order_history_user
+#                baseTableName: order_history
+#                baseColumnNames: user_id
+#                referencedTableName: "user"
+#                referencedColumnNames: user_id
+#                onDelete: CASCADE
+#  - changeSet:
+#      id: 4
+#      author: user
+#      changes:
+#        - createTable:
+#            tableName: user_balance
+#            columns:
+#              - column:
+#                  name: user_id
+#                  type: BIGINT
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: coin_id
+#                  type: BIGINT
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: amount
+#                  type: DECIMAL(38, 10)
+#                  constraints:
+#                    nullable: false
+#            primaryKey:
+#              columns:
+#                - column:
+#                    name: user_id
+#                - column:
+#                    name: coin_id
+#            foreignKeys:
+#              - foreignKeyConstraintName: fk_user_balance_user
+#                baseTableName: user_balance
+#                baseColumnNames: user_id
+#                referencedTableName: "user"
+#                referencedColumnNames: user_id
+#                onDelete: CASCADE
+#              - foreignKeyConstraintName: fk_user_balance_coin
+#                baseTableName: user_balance
+#                baseColumnNames: coin_id
+#                referencedTableName: coin
+#                referencedColumnNames: coin_id
+#                onDelete: CASCADE
