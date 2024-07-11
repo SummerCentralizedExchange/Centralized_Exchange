@@ -62,6 +62,7 @@ public class CandlestickControllerTest {
                         .param("startDate", "2023-01-01")
                         .param("endDate", "2023-01-31"))
                 .andExpect(status().isOk())
+
                 .andExpect(content().json(objectMapper.writeValueAsString(candlesticks)));
     }
 }

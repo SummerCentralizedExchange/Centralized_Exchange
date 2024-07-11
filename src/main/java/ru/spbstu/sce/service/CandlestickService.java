@@ -38,5 +38,5 @@ public class CandlestickService {
                 })
                 .collect(Collectors.toList());
     }
-
 }
+

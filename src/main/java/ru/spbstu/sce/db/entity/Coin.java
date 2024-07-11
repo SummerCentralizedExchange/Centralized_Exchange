@@ -11,5 +11,6 @@ public class Coin{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long coinId;
 
+    @Column(unique = true, nullable = false)
     private String coinName;
 }

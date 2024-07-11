@@ -55,28 +55,27 @@ public class CandlestickServiceTest {
         user = new User("testUser", "password");
         userRepository.save(user);
 
-        orderHistoryRepository.save(new OrderHistory(new BigDecimal("100.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 1, 1, 10, 0), "BUY", baseCoin, quoteCoin, user));
-        orderHistoryRepository.save(new OrderHistory(new BigDecimal("105.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 1, 1, 11, 0), "BUY", baseCoin, quoteCoin, user));
-        orderHistoryRepository.save(new OrderHistory(new BigDecimal("95.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 1, 1, 12, 0), "SELL", baseCoin, quoteCoin, user));
-        orderHistoryRepository.save(new OrderHistory(new BigDecimal("110.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 1, 1, 13, 0), "SELL", baseCoin, quoteCoin, user));
+        orderHistoryRepository.save(new OrderHistory(new BigDecimal("100.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 7, 10, 10, 0), "BUY", baseCoin, quoteCoin, user));
+        orderHistoryRepository.save(new OrderHistory(new BigDecimal("105.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 7, 10, 11, 0), "BUY", baseCoin, quoteCoin, user));
+        orderHistoryRepository.save(new OrderHistory(new BigDecimal("95.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 7, 10, 12, 0), "SELL", baseCoin, quoteCoin, user));
+        orderHistoryRepository.save(new OrderHistory(new BigDecimal("110.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 7, 10, 13, 0), "SELL", baseCoin, quoteCoin, user));
     }
-
-
 
     @Test
     public void testGetCandlesticks() {
-        LocalDate startDate = LocalDate.of(2024, 7, 10);
-        LocalDate endDate = LocalDate.of(2024, 7, 10);
+        LocalDate startDate = LocalDate.of(2023, 7, 10);
+        LocalDate endDate = LocalDate.of(2023, 7, 10);
 
         List<Candlestick> candlesticks = service.getCandlesticks(startDate, endDate);
 
-        assertEquals(0, candlesticks.size());
+        assertEquals(1, candlesticks.size());
 
         Candlestick candlestick = candlesticks.get(0);
-        assertEquals(LocalDate.of(2024, 7, 10), candlestick.getTime());
-        assertEquals(new BigDecimal("100.00"), candlestick.getOpen());
-        assertEquals(new BigDecimal("110.00"), candlestick.getHigh());
-        assertEquals(new BigDecimal("95.00"), candlestick.getLow());
-        assertEquals(new BigDecimal("110.00"), candlestick.getClose());
+        assertEquals(LocalDate.of(2023, 7, 10), candlestick.getTime());
+        assertEquals(0, candlestick.getOpen().compareTo(new BigDecimal("100.00")));
+        assertEquals(0, candlestick.getHigh().compareTo(new BigDecimal("110.00")));
+        assertEquals(0, candlestick.getLow().compareTo(new BigDecimal("95.00")));
+        assertEquals(0, candlestick.getClose().compareTo(new BigDecimal("110.00")));
+
     }
 }
