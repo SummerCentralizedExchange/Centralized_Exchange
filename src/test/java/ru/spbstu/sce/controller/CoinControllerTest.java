@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.spbstu.sce.db.entity.Coin.Coin;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.repositories.CoinRepository;
 import ru.spbstu.sce.db.repositories.OrderHistoryRepository;
 import ru.spbstu.sce.db.repositories.UserBalanceRepository;
@@ -59,6 +59,11 @@ public class CoinControllerTest {
 
         mockMvc.perform(get("/symbols"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"symbols\":[\"BTCETH\",\"BTCUSDT\",\"ETHBTC\",\"ETHUSDT\",\"USDTBTC\",\"USDTETH\"]}"));
+                .andExpect(content().json("{\"symbols\":[\"BTCETH\"," +
+                        "\"BTCUSDT\"," +
+                        "\"ETHBTC\"," +
+                        "\"ETHUSDT\"," +
+                        "\"USDTBTC\"," +
+                        "\"USDTETH\"]}"));
     }
 }

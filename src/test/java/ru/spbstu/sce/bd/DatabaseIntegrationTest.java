@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import ru.spbstu.sce.db.entity.*;
-import ru.spbstu.sce.db.entity.Coin.Coin;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.entity.user.UserBalance;
 import ru.spbstu.sce.db.entity.user.UserBalanceId;

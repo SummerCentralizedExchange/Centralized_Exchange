@@ -1,4 +1,4 @@
-package ru.spbstu.sce.db.entity.Coin;
+package ru.spbstu.sce.db.entity.coin;
 
 import jakarta.persistence.*;
 import lombok.Data;

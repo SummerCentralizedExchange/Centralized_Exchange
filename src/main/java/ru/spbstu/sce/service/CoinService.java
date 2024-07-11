@@ -2,12 +2,12 @@ package ru.spbstu.sce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.spbstu.sce.db.entity.Coin.Coin;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.repositories.CoinRepository;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CoinService {
@@ -17,16 +17,12 @@ public class CoinService {
 
     public List<String> getAllSymbols() {
         List<Coin> coins = coinRepository.findAll();
-        List<String> symbols = new ArrayList<>();
 
-        for (int i = 0; i < coins.size(); i++) {
-            for (int j = 0; j < coins.size(); j++) {
-                if (i != j) {
-                    symbols.add(coins.get(i).getCoinName() + coins.get(j).getCoinName());
-                }
-            }
-        }
-
-        return symbols;
+        return coins.stream()
+                .flatMap(coin1 -> coins.stream()
+                        .filter(coin2 -> !coin1.equals(coin2))
+                        .map(coin2 -> coin1.getCoinName() + coin2.getCoinName()))
+                .collect(Collectors.toList());
     }
+
 }
