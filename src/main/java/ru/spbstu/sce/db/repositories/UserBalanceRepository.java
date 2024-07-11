@@ -2,8 +2,8 @@ package ru.spbstu.sce.db.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.spbstu.sce.db.entity.UserBalance;
-import ru.spbstu.sce.db.entity.UserBalanceId;
+import ru.spbstu.sce.db.entity.user.UserBalance;
+import ru.spbstu.sce.db.entity.user.UserBalanceId;
 
 import java.util.Optional;
 
