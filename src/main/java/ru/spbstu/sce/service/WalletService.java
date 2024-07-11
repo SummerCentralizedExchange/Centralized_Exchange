@@ -15,7 +15,7 @@ public class WalletService {
     @Autowired
     private UserBalanceRepository userBalanceRepository;
 
-    public List<CoinWalletBalance> getWalletBalance(Principal principal, @NonNull List<String> symbols) {
+    public List<CoinWalletBalance> getWalletBalance(@NonNull Principal principal, @NonNull List<String> symbols) {
         if (symbols.isEmpty()) {
             return userBalanceRepository.findByUserLogin(principal.getName());
         }
