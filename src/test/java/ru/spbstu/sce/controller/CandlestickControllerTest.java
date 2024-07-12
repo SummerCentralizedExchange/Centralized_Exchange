@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.spbstu.sce.db.entity.Coin;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.OrderHistory;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.repositories.CoinRepository;
