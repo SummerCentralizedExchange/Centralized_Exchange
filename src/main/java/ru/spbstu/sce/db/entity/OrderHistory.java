@@ -2,6 +2,7 @@ package ru.spbstu.sce.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.user.User;
 
 import java.math.BigDecimal;
