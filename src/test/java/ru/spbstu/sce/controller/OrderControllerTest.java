@@ -41,7 +41,13 @@ class OrderControllerTest {
 
     @Test
     void testCreateLimitOrder() throws Exception {
-        OrderItem orderItem = new OrderItem("Test", new BigDecimal("100"), new BigDecimal("10"), "Buy", "Limit", "baseCoin", "user1");
+        OrderItem orderItem = new OrderItem("Test",
+                new BigDecimal("100"),
+                new BigDecimal("10"),
+                "Buy",
+                "Limit",
+                "baseCoin",
+                "user1");
 
         when(marketList.isValidSymbol("Test")).thenReturn(true);
 
@@ -54,7 +60,13 @@ class OrderControllerTest {
 
     @Test
     void testCreateMarketOrder() throws Exception {
-        OrderItem orderItem = new OrderItem("Test", null, new BigDecimal("10"), "Buy", "Market", "baseCoin", "user1");
+        OrderItem orderItem = new OrderItem("Test",
+                null,
+                new BigDecimal("10"),
+                "Buy",
+                "Market",
+                "baseCoin",
+                "user1");
 
         when(marketList.getOfferOrders("Test")).thenReturn(Collections.singletonList(new Order(new BigDecimal("100"), new BigDecimal("10"))));
 
