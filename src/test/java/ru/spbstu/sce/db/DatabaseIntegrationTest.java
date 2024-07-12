@@ -1,4 +1,4 @@
-package ru.spbstu.sce.bd;
+package ru.spbstu.sce.db;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

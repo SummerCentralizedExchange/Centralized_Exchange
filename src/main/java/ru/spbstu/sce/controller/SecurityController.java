@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.spbstu.sce.accesscontrol.TokenProvider;
-import ru.spbstu.sce.db.entity.user.SinginRequest;
+import ru.spbstu.sce.db.entity.user.SigninRequest;
 import ru.spbstu.sce.db.entity.user.SignupRequest;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.repositories.UserRepository;
@@ -57,10 +57,10 @@ public class SecurityController {
     }
 
     @PostMapping("/signin")
-    ResponseEntity<?> signin(@RequestBody SinginRequest singinRequest) {
+    ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
         Authentication authentication;
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(singinRequest.getUserName(), singinRequest.getPassword()));
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.username(), signinRequest.password()));
             logger.info(authentication.getPrincipal().toString());
         } catch (BadCredentialsException e) {
             logger.error(e.getMessage());
