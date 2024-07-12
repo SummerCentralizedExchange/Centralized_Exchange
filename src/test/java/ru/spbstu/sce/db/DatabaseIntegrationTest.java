@@ -60,7 +60,7 @@ public class DatabaseIntegrationTest {
     @Test
     public void testCreateUserBalance() {
         User user = new User();
-        user.setLogin("testUser");
+        user.setLogin("testUser2");
         user.setPassword("password");
         userRepository.save(user);
 
@@ -84,7 +84,7 @@ public class DatabaseIntegrationTest {
     @Test
     public void testCreateOrderHistory() {
         User user = new User();
-        user.setLogin("testUser");
+        user.setLogin("testUser3");
         user.setPassword("password");
         userRepository.save(user);
 

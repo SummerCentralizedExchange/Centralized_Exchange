@@ -14,7 +14,7 @@ public class Coin{
     @Column(unique = true, nullable = false)
     private String coinName;
 
-    public Coin(String coinName){
+    public Coin(String coinName) {
         this.coinName = coinName;
     }
 
