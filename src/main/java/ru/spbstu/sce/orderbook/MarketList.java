@@ -121,4 +121,18 @@ public class MarketList {
         }
         return new ArrayList<>();
     }
+
+    public String bidMarket(OrderItem orderItem) {
+        if (!orderBooks.containsKey(orderItem.getSymbol())) {
+            throw new IllegalArgumentException("Unknown symbol" + orderItem.getSymbol());
+        }
+        return orderBooks.get(orderItem.getSymbol()).bidMarket(orderItem.getQuantity());
+    }
+
+    public String offerMarket(OrderItem orderItem) {
+        if (!orderBooks.containsKey(orderItem.getSymbol())) {
+            throw new IllegalArgumentException("Unknown symbol" + orderItem.getSymbol());
+        }
+        return orderBooks.get(orderItem.getSymbol()).offerMarket(orderItem.getQuantity());
+    }
 }

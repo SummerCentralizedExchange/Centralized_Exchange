@@ -28,49 +28,34 @@ public class OrderController {
         }
     }
 
+    private String createMarketOrder(OrderItem orderItem) {
+        if (orderItem.getSide().equalsIgnoreCase("Buy")) {
+            if (!"baseCoin".equalsIgnoreCase(orderItem.getMarketUnit())) {
+                //default buy quoteCoin
+                throw new UnsupportedOperationException();
+            } else {
+                //buy baseCoin
+                market.bidMarket(orderItem);
+            }
+        } else if (orderItem.getSide().equalsIgnoreCase("Sell")) {
+            if (!"quoteCoin".equalsIgnoreCase(orderItem.getMarketUnit())) {
+                //default sell baseCoin
+                market.offerMarket(orderItem);
+            } else {
+                //sell quoteCoin
+                throw new UnsupportedOperationException();
+            }
+        } else {
+            return "Invalid side parameter. Must be 'Buy' or 'Sell'.";
+        }
+        return "Order created successfully";
+    }
+
     private String createLimitOrder(OrderItem orderItem) {
         if (orderItem.getPrice() == null) {
             return "Price must be specified for limit orders.";
         }
         return processOrder(orderItem);
-    }
-
-    private String createMarketOrder(OrderItem orderItem) {
-        List<Order> matchingOrders = getMatchingOrders(orderItem);
-
-        if (matchingOrders.isEmpty()) {
-            return "No matching orders available.";
-        }
-
-        BigDecimal totalQuantity = orderItem.getQuantity();
-        BigDecimal filledQuantity = BigDecimal.ZERO;
-        BigDecimal averagePrice = BigDecimal.ZERO;
-
-        for (Order matchingOrder : matchingOrders) {
-            BigDecimal tradeQuantity = matchingOrder.getQuantity().min(totalQuantity.subtract(filledQuantity));
-            filledQuantity = filledQuantity.add(tradeQuantity);
-            averagePrice = averagePrice.add(matchingOrder.getPrice().multiply(tradeQuantity));
-
-            if (filledQuantity.compareTo(totalQuantity) >= 0) {
-                break;
-            }
-        }
-
-        averagePrice = averagePrice.divide(filledQuantity, BigDecimal.ROUND_HALF_UP);
-        orderItem.setPrice(averagePrice);
-        orderItem.setQuantity(filledQuantity);
-
-        return processOrder(orderItem);
-    }
-
-    private List<Order> getMatchingOrders(OrderItem orderItem) {
-        if (orderItem.getSide().equalsIgnoreCase("Buy")) {
-            return market.getOfferOrders(orderItem.getSymbol());
-        } else if (orderItem.getSide().equalsIgnoreCase("Sell")) {
-            return market.getBidOrders(orderItem.getSymbol());
-        } else {
-            throw new IllegalArgumentException("Invalid side parameter. Must be 'Buy' or 'Sell'.");
-        }
     }
 
     private String processOrder(OrderItem orderItem) {
