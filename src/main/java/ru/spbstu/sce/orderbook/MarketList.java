@@ -19,7 +19,7 @@ public class MarketList {
 
     public MarketList() {
         orderBooks = new HashMap<>();
-        orderBooks.put("Test", new OrderBook("Test"));
+        orderBooks.put("BTCUSDT", new OrderBook("BTCUSDT")); // We using BTCUSDT as example
     }
 
     public void add(String symbol) {

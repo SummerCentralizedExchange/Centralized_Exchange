@@ -6,13 +6,15 @@ import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 import OrderForm from "./OrderForm/OrderForm";
 import axios from 'axios';
 import LoginModal from "./LoginModal/LoginModal";
+import UtilsSymbol from "./Utils/UtilsSymbol";
+import MarketOrderForm from "./OrderForm/MarketOrderForm";
 
 const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
 export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [symbol, setSymbol] = useState<string>('Test'); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
+  const [symbol, setSymbol] = useState<UtilsSymbol>({ baseCoin: "BTC", quoteCoin: 'USDT' }); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
   const [symbolList, setSymbolList] = useState<string[]>([]);
 
   const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [],bids: []});
@@ -61,7 +63,7 @@ export default function App() {
   useEffect(() => {
     const fetchOrderBook = async () => {
       try {
-        const response = await axios.get(`${SERVER_ADDRESS}/market/orderbook?symbol=${symbol}`);
+        const response = await axios.get(`${SERVER_ADDRESS}/market/orderbook?symbol=${mergedSymbol}`);
         console.log(response.data);
         setOrderBookData({bids:response.data.bids, asks:response.data.asks});
         console.log(orderBookData);
@@ -119,12 +121,16 @@ export default function App() {
     return () => {chart.remove();};
   }, []);
 
+
+  const mergedSymbol = `${symbol.baseCoin}${symbol.quoteCoin}`;
+
   return (
     <div style={{backgroundColor:'#282c34'}}>
       <LoginModal show={showModal} handleClose={handleClose} setUserName={setUserName} setUserToken={setUserToken} />
-      <SymbolHeader symbol={symbol} userName={userName} symbolList={symbolList} />
+      <SymbolHeader symbol={mergedSymbol} userName={userName} symbolList={symbolList} />
       <StyledOrderBook book={orderBookData}/>
-      <OrderForm symbol={symbol} token={token}/>
+      <OrderForm symbol={mergedSymbol} token={token}/>
+      <MarketOrderForm symbol={symbol} token={token}/>
       <div ref={chartContainerRef}> </div>
     </div>
   );
