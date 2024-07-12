@@ -1,8 +1,13 @@
 import Dropdown from "react-bootstrap/esm/Dropdown";
 
-export default function SymbolHeader({symbol}:{symbol:string}) {
+export default function SymbolHeader({symbol, userName}:{symbol:string, userName:string | null}) {
 return (
+    <>
+    <div style={{color:'white', textAlign:'right', padding:'5px' }}>
+        <p>Welcome, {userName}!</p>
+    </div>
     <header style={headerStyle}>
+
         <div style={symbolStyle}>
         <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic" style = {{color:'white', background:'transparent', border:'none'}}>
@@ -13,8 +18,10 @@ return (
                 {/* Symbols */}
             </Dropdown.Menu>
         </Dropdown>
+        
         </div>
     </header>
+    </>
     );
 }
 

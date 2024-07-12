@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import StyledOrderBook from "./StyledOrderBook/StyledOrderBook";
 import OrderForm from "./OrderForm/OrderForm";
 import axios from 'axios';
+import LoginModal from "./LoginModal/LoginModal";
 
 const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
@@ -14,6 +15,24 @@ export default function App() {
   const [symbol, setSymbol] = useState<string>('Test'); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
   const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [],bids: []});
   
+  const [showModal, setShowModal] = useState(true);
+  const handleClose = () => setShowModal(false);
+  const [userName, setUserName] = useState<string | null>(null);
+  
+  useEffect(() => {
+    // Check if the user is already authenticated
+    const token = localStorage.getItem('Authorization');
+    console.log(`User name: ${userName}`)
+
+    if(userName === null) {
+      setShowModal(true);
+    }
+
+    if (token && userName !== null) {
+      setShowModal(false);
+    }
+  }, []);
+
   //
   useEffect(() => {
     const fetchOrderBook = async () => {
@@ -78,7 +97,8 @@ export default function App() {
 
   return (
     <div style={{backgroundColor:'#282c34'}}>
-      <SymbolHeader symbol={symbol} />
+      <LoginModal show={showModal} handleClose={handleClose} setUserName={setUserName} />
+      <SymbolHeader symbol={symbol} userName={userName} />
       <StyledOrderBook book={orderBookData}/>
       <OrderForm symbol={symbol}/>
       <div ref={chartContainerRef}> </div>
