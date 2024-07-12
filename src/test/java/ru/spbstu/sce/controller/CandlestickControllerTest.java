@@ -50,21 +50,17 @@ public class CandlestickControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private User user;
-    private Coin baseCoin;
-    private Coin quoteCoin;
-
     @BeforeEach
     public void setUp() {
         orderHistoryRepository.deleteAll();
         coinRepository.deleteAll();
         userRepository.deleteAll();
 
-        baseCoin = new Coin("BTC");
-        quoteCoin = new Coin("USD");
+        Coin baseCoin = new Coin("BTC");
+        Coin quoteCoin = new Coin("USD");
         coinRepository.saveAll(Arrays.asList(baseCoin, quoteCoin));
 
-        user = new User("testUser", "password");
+        User user = new User("testUser", "password");
         userRepository.save(user);
 
         orderHistoryRepository.saveAll(Arrays.asList(
@@ -88,7 +84,7 @@ public class CandlestickControllerTest {
                 new BigDecimal("120.0")
         );
 
-        List<Candlestick> candlesticks = Arrays.asList(candlestick1);
+        List<Candlestick> candlesticks = List.of(candlestick1);
 
         given(candlestickService.getCandlesticks(startDate, endDate)).willReturn(candlesticks);
 
