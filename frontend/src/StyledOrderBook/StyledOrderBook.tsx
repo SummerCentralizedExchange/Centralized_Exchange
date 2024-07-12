@@ -13,7 +13,7 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
       <>
       <Alert variant='warning'>
           Order book is empty now!
-        </Alert>
+      </Alert>
       </>
       }
       </>

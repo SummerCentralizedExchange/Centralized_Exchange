@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
+import UtilsSymbol from '../Utils/UtilsSymbol';
 
 type FormValues = {
   side: 'Buy' | 'Sell';
   quantity: number;
-  price: number;
+  marketUnit:string;
 };
 
 const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
-export default function OrderFormModal({symbol, token}:{symbol:string, token:string}) {
+export default function MarketOrderForm({symbol, token}:{symbol:UtilsSymbol, token:string}) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [show, setShow] = useState(false);
 
@@ -19,11 +20,12 @@ export default function OrderFormModal({symbol, token}:{symbol:string, token:str
   const handleShow = () => setShow(true);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const postData = {
-      symbol: symbol,
-      type: 'Limit',
+    var postData = {
+      symbol: `${symbol.baseCoin}${symbol.quoteCoin}`,
+      type: 'Market',
       ...data
     };
+
     const config = {
       headers: { Authorization: `Bearer ${token}` }
   };
@@ -51,13 +53,13 @@ export default function OrderFormModal({symbol, token}:{symbol:string, token:str
     <>
       <div style={{ display: 'flex', justifyContent: 'center', margin: '5px' }}>
         <Button variant="dark" onClick={handleShow}>
-          Place order
+          Place <b>Market</b> order!
         </Button>
       </div>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton style={{ backgroundColor: '#282c34', borderBottom: '1px solid #444' }}>
-          <Modal.Title style={{ color: 'white' }}>Place order for {symbol}</Modal.Title>
+          <Modal.Title style={{ color: 'white' }}>Place order for {`${symbol.baseCoin}${symbol.quoteCoin}`}</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: '#282c34', color: 'white' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -66,6 +68,15 @@ export default function OrderFormModal({symbol, token}:{symbol:string, token:str
               <select id="type" className="form-control" {...register("side", { required: true })}>
                 <option value="Buy">Buy</option>
                 <option value="Sell">Sell</option>
+              </select>
+              {errors.side && <span className="text-danger">This field is required</span>}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="type">Market Unit:</label>
+              <select id="type" className="form-control" {...register("marketUnit", { required: true })}>
+                <option value="baseCoin">{symbol.baseCoin}</option>
+                <option value="quoteCoin">{symbol.quoteCoin}</option>
               </select>
               {errors.side && <span className="text-danger">This field is required</span>}
             </div>
@@ -80,18 +91,6 @@ export default function OrderFormModal({symbol, token}:{symbol:string, token:str
                 {...register("quantity", { required: true, valueAsNumber: true })}
               />
               {errors.quantity && <span className="text-danger">This field is required and must be a number</span>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="price">Price:</label>
-              <input
-                id="price"
-                type="number"
-                step="any"
-                className="form-control"
-                {...register("price", { required: true, valueAsNumber: true })}
-              />
-              {errors.price && <span className="text-danger">This field is required and must be a number</span>}
             </div>
 
             <Button type="submit" variant="dark" style={{marginTop:'5px'}}>
