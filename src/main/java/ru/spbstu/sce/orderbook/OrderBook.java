@@ -193,6 +193,7 @@ public class OrderBook {
     public String offerMarket(BigDecimal quantityBaseCoin) {
         while (quantityBaseCoin.compareTo(BigDecimal.ZERO) > 0) {
             if (bidMap.isEmpty()) {
+                // TODO proper error handling. Need to signal the user that his order partially worked
                 return "Limit order is needed, orderbook is empty. Your quantity = " + quantityBaseCoin;
             }
             var e = bidMap.firstEntry();

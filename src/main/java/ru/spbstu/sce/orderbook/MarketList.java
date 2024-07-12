@@ -55,8 +55,7 @@ public class MarketList {
 
         if (orderBooks.containsKey(symbol)) {
             OrderBook orderBook = orderBooks.get(symbol);
-            Map<BigDecimal, List<Order>> bidMap = orderBook.getBidMap();
-            return bidMap;
+            return orderBook.getBidMap();
         }
 
         return null;
@@ -68,8 +67,7 @@ public class MarketList {
         if (orderBooks.containsKey(symbol)) {
 
             OrderBook orderBook = orderBooks.get(symbol);
-            Map<BigDecimal, List<Order>> offerMap = orderBook.getOfferMap();
-            return offerMap;
+            return orderBook.getOfferMap();
         }
 
         return null;
