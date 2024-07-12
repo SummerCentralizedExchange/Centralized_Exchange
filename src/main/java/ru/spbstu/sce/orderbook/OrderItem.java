@@ -1,51 +1,35 @@
 package ru.spbstu.sce.orderbook;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
+@Setter
+@Getter
 public class OrderItem {
     private String symbol;
     private BigDecimal price;
     private BigDecimal quantity;
-    private String type;
     private String side;
+    private String type;
+    private String marketUnit;
+    private String userLogin;
 
-    public String getSymbol() {
-        return symbol;
-    }
+    public OrderItem() {}
 
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public BigDecimal getQuantity() {
-        return quantity;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getSide() {
-        return side;
-    }
-
-    public void setSymbol(String symbol) {
+    public OrderItem(String symbol, BigDecimal price, BigDecimal quantity, String side, String type, String marketUnit, String userLogin) {
         this.symbol = symbol;
-    }
-
-    public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setSide(String side) {
         this.side = side;
+        this.type = type;
+        this.marketUnit = marketUnit;
+        this.userLogin = userLogin;
+    }
+
+    @Override
+    public String toString() {
+        return this.symbol + " " + this.price + " " + this.quantity + " " + this.side + " " + this.type + " " + this.marketUnit + " " + this.userLogin;
     }
 }

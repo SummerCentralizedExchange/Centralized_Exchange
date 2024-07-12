@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class MarketList {
     private final Logger logger = LoggerFactory.getLogger(MarketList.class);
 
-    private Map<String, OrderBook> orderBooks;
+    private final Map<String, OrderBook> orderBooks;
 
     public MarketList() {
         orderBooks = new HashMap<>();
@@ -23,7 +23,7 @@ public class MarketList {
     }
 
     public void add(String symbol) {
-        logger.info("MarketList Add coin: " + symbol);
+        logger.info("MarketList Add coin: {}", symbol);
 
         orderBooks.putIfAbsent(symbol, new OrderBook(symbol));
     }
@@ -96,5 +96,29 @@ public class MarketList {
 
     public boolean isValidSymbol(String symbol) {
         return orderBooks.containsKey(symbol);
+    }
+
+    public List<Order> getOfferOrders(String symbol) {
+        if (orderBooks.containsKey(symbol)) {
+            OrderBook orderBook = orderBooks.get(symbol);
+            List<Order> allOrders = new ArrayList<>();
+            for (List<Order> orders : orderBook.getOfferMap().values()) {
+                allOrders.addAll(orders);
+            }
+            return allOrders;
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Order> getBidOrders(String symbol) {
+        if (orderBooks.containsKey(symbol)) {
+            OrderBook orderBook = orderBooks.get(symbol);
+            List<Order> allOrders = new ArrayList<>();
+            for (List<Order> orders : orderBook.getBidMap().values()) {
+                allOrders.addAll(orders);
+            }
+            return allOrders;
+        }
+        return new ArrayList<>();
     }
 }
