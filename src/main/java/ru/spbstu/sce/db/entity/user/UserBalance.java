@@ -1,8 +1,8 @@
-package ru.spbstu.sce.db.entity;
+package ru.spbstu.sce.db.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.spbstu.sce.db.entity.user.User;
+import ru.spbstu.sce.db.entity.coin.Coin;
 
 import java.math.BigDecimal;
 

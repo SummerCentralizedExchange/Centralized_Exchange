@@ -1,9 +1,22 @@
 import { OrderBook } from '@lab49/react-order-book';
+import { useState } from 'react';
+import Alert from 'react-bootstrap/esm/Alert';
 
 export default function StyledOrderBook({ book }: { book: { bids: string[][], asks: string[][] } }) {
+  
+  const [bookStatus, setBookStatus] = useState<boolean>(() => {return book.bids.length !== 0 || book.asks.length !== 0});
   // Ensure there are elements in bids and asks
   if (!book.bids.length || !book.asks.length) {
-    return <div>Order book data is not available</div>;
+    console.log('Order book is empty');
+    return <>
+    {!bookStatus && 
+      <>
+      <Alert variant='warning'>
+          Order book is empty now!
+        </Alert>
+      </>
+      }
+      </>
   }
 
   return (

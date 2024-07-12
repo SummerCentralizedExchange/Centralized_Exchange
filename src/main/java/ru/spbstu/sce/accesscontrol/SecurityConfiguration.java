@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**", "/market/**", "/greeting").permitAll()
+                        .requestMatchers("/auth/**", "/market/**", "/greeting", "/symbols").permitAll()
                         .requestMatchers("/secured/user", "/account/**", "/order/**").fullyAuthenticated()
                         .anyRequest().denyAll()
                 )

@@ -12,7 +12,7 @@ export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [symbol, setSymbol] = useState<string>('Test'); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
-  const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [['1.01', '2'],['1.02', '3'],],bids: [['0.99', '5'],['0.98', '3'],],});
+  const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [],bids: []});
   
   //
   useEffect(() => {

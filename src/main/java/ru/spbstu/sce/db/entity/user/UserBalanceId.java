@@ -1,4 +1,4 @@
-package ru.spbstu.sce.db.entity;
+package ru.spbstu.sce.db.entity.user;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
