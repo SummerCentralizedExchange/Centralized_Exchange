@@ -34,25 +34,21 @@ public class CandlestickServiceTest {
     @Autowired
     private CandlestickService service;
 
-    private Coin baseCoin;
-    private Coin quoteCoin;
-    private User user;
-
     @BeforeEach
     public void setUp() {
         orderHistoryRepository.deleteAll();
         coinRepository.deleteAll();
         userRepository.deleteAll();
 
-        baseCoin = new Coin();
+        Coin baseCoin = new Coin();
         baseCoin.setCoinName("BTC");
         coinRepository.save(baseCoin);
 
-        quoteCoin = new Coin();
+        Coin quoteCoin = new Coin();
         quoteCoin.setCoinName("USD");
         coinRepository.save(quoteCoin);
 
-        user = new User("testUser", "password");
+        User user = new User("testUser", "password");
         userRepository.save(user);
 
         orderHistoryRepository.save(new OrderHistory(new BigDecimal("100.00"), new BigDecimal("1.00"), LocalDateTime.of(2023, 7, 10, 10, 0), "BUY", baseCoin, quoteCoin, user));
