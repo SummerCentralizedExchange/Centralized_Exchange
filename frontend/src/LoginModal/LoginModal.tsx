@@ -9,6 +9,7 @@ interface LoginModalProps {
   show: boolean;
   handleClose: () => void;
   setUserName: (name: string) => void;
+  setUserToken: (name: string) => void;
 }
 
 interface FormValues {
@@ -16,7 +17,7 @@ interface FormValues {
   password: string;
 }
 
-const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose, setUserName }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose, setUserName, setUserToken }) => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [isSignup, setIsSignup] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,6 +31,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ show, handleClose, setUserName 
         localStorage.setItem('Authorization', `Bearer ${response.data}`);
         console.log('Bearer token: ',response.data)
         setUserName(data.username);
+        setUserToken(response.data);
         window.alert('Successfully logged in!');
         setIsLoggedIn(true);
         handleClose();

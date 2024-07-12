@@ -11,7 +11,7 @@ type FormValues = {
 
 const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
-export default function OrderFormModal({symbol}:{symbol:string}) {
+export default function OrderFormModal({symbol, token}:{symbol:string, token:string}) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [show, setShow] = useState(false);
 
@@ -24,10 +24,13 @@ export default function OrderFormModal({symbol}:{symbol:string}) {
       type: 'Limit',
       ...data
     };
-    console.log(`sending post request: ${JSON.stringify(postData)}`);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+  };
+    console.log(`sending post request: ${JSON.stringify(postData)} with token ${token}`);
     
     try {
-      const response = await axios.post(`${SERVER_ADDRESS}/order/create`, postData);
+      const response = await axios.post(`${SERVER_ADDRESS}/order/create`, postData, config);
       console.log('Order created:', response.data);
 
       if (response.status === 200) {
