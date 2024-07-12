@@ -13,6 +13,8 @@ export default function App() {
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [symbol, setSymbol] = useState<string>('Test'); { /* TODO: now we use default `Test`, but should make request to server with getting some symbol */}
+  const [symbolList, setSymbolList] = useState<string[]>([]);
+
   const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [],bids: []});
   
   const [showModal, setShowModal] = useState(true);
@@ -20,6 +22,27 @@ export default function App() {
   const [userName, setUserName] = useState<string | null>(null);
   const [token, setUserToken] = useState<string>("");
   
+
+  useEffect(() => {
+    // Get symbols
+    const fetchSymbolList = async () => {
+      try {
+        const response = await axios.get(`${SERVER_ADDRESS}/symbols`);
+        console.log("Fetching symbols");
+        console.log(response.data);
+        setSymbolList(["Test", ...symbolList]); /* TODO: Remove `Test` from symbol list */
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching symbol list:', error);
+      }
+      
+      fetchSymbolList();
+    };
+
+
+  }, []);
+
+  //
   useEffect(() => {
     // Check if the user is already authenticated
     const token = localStorage.getItem('Authorization');
@@ -99,7 +122,7 @@ export default function App() {
   return (
     <div style={{backgroundColor:'#282c34'}}>
       <LoginModal show={showModal} handleClose={handleClose} setUserName={setUserName} setUserToken={setUserToken} />
-      <SymbolHeader symbol={symbol} userName={userName} />
+      <SymbolHeader symbol={symbol} userName={userName} symbolList={symbolList} />
       <StyledOrderBook book={orderBookData}/>
       <OrderForm symbol={symbol} token={token}/>
       <div ref={chartContainerRef}> </div>

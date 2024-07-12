@@ -1,7 +1,10 @@
+import { DropdownItem } from "react-bootstrap";
 import Dropdown from "react-bootstrap/esm/Dropdown";
 
-export default function SymbolHeader({symbol, userName}:{symbol:string, userName:string | null}) {
-return (
+export default function SymbolHeader({symbol, userName, symbolList}:{symbol:string, userName:string | null, symbolList:string[]}) {
+    console.log(`symbolList: ${symbolList}`)
+
+    return (
     <>
     <div style={{color:'white', textAlign:'right', padding:'5px' }}>
         <p>Welcome, {userName}!</p>
@@ -16,6 +19,7 @@ return (
 
             <Dropdown.Menu>
                 {/* Symbols */}
+                {symbolList.map((item) => (<DropdownItem>item</DropdownItem>))}
             </Dropdown.Menu>
         </Dropdown>
         
