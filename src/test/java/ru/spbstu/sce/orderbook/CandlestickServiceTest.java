@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.spbstu.sce.db.entity.Coin;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.OrderHistory;
 import ru.spbstu.sce.db.entity.user.User;
 import ru.spbstu.sce.db.repositories.CoinRepository;
