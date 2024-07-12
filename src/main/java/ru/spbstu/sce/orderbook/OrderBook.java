@@ -59,70 +59,69 @@ public class OrderBook {
     }
 
     public void matchOrders() {
-        boolean stop = false;
-        while (!stop) {
+        while (true) {
             BigDecimal highestBid = bidMaxPriceList.peek();
             BigDecimal lowestOffer = offerMinPriceList.peek();
 
-            //Completion condition: there are no purchase or sale orders, or the lowest sale price is higher than the highest purchase price
+            //Completion condition: there are no purchase or sale orders,
+            // or the lowest sale price is higher than the highest purchase price
             if (lowestOffer == null || highestBid == null || lowestOffer.compareTo(highestBid) > 0) {
-                stop = true;
                 logger.info("OrderBook matchOrders finished = true");
+                break;
             }
+
+            List<Order> bidOrders = bidMap.get(highestBid);
+            List<Order> offerOrders = offerMap.get(lowestOffer);
+
+            // Getting the first (oldest) application from each list
+            Order bidOrder = bidOrders.get(0);
+            Order offerOrder = offerOrders.get(0);
+
+            BigDecimal bidQuantity = bidOrder.getQuantity();
+            BigDecimal offerQuantity = offerOrder.getQuantity();
+
+            // If the quantity in the purchase order is greater than the quantity in the sale order
+            if (bidQuantity.compareTo(offerQuantity) > 0) {
+                logger.info("bidQuantity > offerQuantity");
+                logger.info(makeSuccessfulTradeInfo(offerQuantity, lowestOffer));
+
+                // Reducing the quantity in the purchase request
+                bidOrder.setQuantity(bidQuantity.subtract(offerQuantity));
+                logger.info("bidQuantity remaining quantity : {}", bidQuantity);
+
+                // Closing the previous sale request
+                offerOrders.remove(0);
+                if (offerOrders.isEmpty()) {
+                    offerMinPriceList.remove();
+                }
+            }
+            // If the quantity in the sales order is greater than the quantity in the purchase order
+            else if (offerQuantity.compareTo(bidQuantity) > 0) {
+                logger.info("bidQuantity < offerQuantity");
+                logger.info(makeSuccessfulTradeInfo(bidQuantity, highestBid));
+
+                offerOrder.setQuantity(offerQuantity.subtract(bidQuantity));
+                logger.info("offerQuantity remaining quantity : {}", offerQuantity);
+
+                bidOrders.remove(0);
+                if (bidOrders.isEmpty()) {
+                    bidMaxPriceList.remove();
+                }
+            }
+            // If the quantity in the purchase and sale orders are equal
             else {
-                List<Order> bidOrders = bidMap.get(highestBid);
-                List<Order> offerOrders = offerMap.get(lowestOffer);
+                logger.info(makeSuccessfulTradeInfo(offerQuantity, highestBid));
 
-                // Getting the first (oldest) application from each list
-                Order bidOrder = bidOrders.get(0);
-                Order offerOrder = offerOrders.get(0);
+                // We delete closed purchase and sale orders
+                bidOrders.remove(0);
+                offerOrders.remove(0);
 
-                BigDecimal bidQuantity = bidOrder.getQuantity();
-                BigDecimal offerQuantity = offerOrder.getQuantity();
-
-                // If the quantity in the purchase order is greater than the quantity in the sale order
-                if (bidQuantity.compareTo(offerQuantity) > 0) {
-                    logger.info("bidQuantity > offerQuantity");
-                    logger.info(makeSuccessfulTradeInfo(offerQuantity, lowestOffer));
-
-                    // Reducing the quantity in the purchase request
-                    bidOrder.setQuantity(bidQuantity.subtract(offerQuantity));
-                    logger.info("bidQuantity remaining quantity : {}", bidQuantity);
-
-                    // Closing the previous sale request
-                    offerOrders.remove(0);
-                    if (offerOrders.isEmpty()) {
-                        offerMinPriceList.remove();
-                    }
+                // We remove the price from the queue if all requests for this price are fulfilled
+                if (bidOrders.isEmpty()) {
+                    bidMaxPriceList.remove();
                 }
-                // If the quantity in the sales order is greater than the quantity in the purchase order
-                else if (offerQuantity.compareTo(bidQuantity) > 0) {
-                    logger.info("bidQuantity < offerQuantity");
-                    logger.info(makeSuccessfulTradeInfo(bidQuantity, highestBid));
-
-                    offerOrder.setQuantity(offerQuantity.subtract(bidQuantity));
-                    logger.info("offerQuantity remaining quantity : {}", offerQuantity);
-
-                    bidOrders.remove(0);
-                    if (bidOrders.isEmpty()) {
-                        bidMaxPriceList.remove();
-                    }
-                }
-                // If the quantity in the purchase and sale orders are equal
-                else {
-                    logger.info(makeSuccessfulTradeInfo(offerQuantity, highestBid));
-
-                    // We delete closed purchase and sale orders
-                    bidOrders.remove(0);
-                    offerOrders.remove(0);
-
-                    // We remove the price from the queue if all requests for this price are fulfilled
-                    if (bidOrders.isEmpty()) {
-                        bidMaxPriceList.remove();
-                    }
-                    if (offerOrders.isEmpty()) {
-                        offerMinPriceList.remove();
-                    }
+                if (offerOrders.isEmpty()) {
+                    offerMinPriceList.remove();
                 }
             }
         }
