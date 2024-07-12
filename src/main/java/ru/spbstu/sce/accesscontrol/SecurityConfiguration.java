@@ -53,9 +53,9 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/secured/user").fullyAuthenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/auth/**", "/market/**", "/greeting").permitAll()
+                        .requestMatchers("/secured/user", "/account/**", "/order/**").fullyAuthenticated()
+                        .anyRequest().denyAll()
                 )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

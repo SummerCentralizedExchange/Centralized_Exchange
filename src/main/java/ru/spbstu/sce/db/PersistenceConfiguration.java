@@ -1,4 +1,4 @@
-package ru.spbstu.sce.bd;
+package ru.spbstu.sce.db;
 
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
