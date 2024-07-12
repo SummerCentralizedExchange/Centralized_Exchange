@@ -1,4 +1,4 @@
-package ru.spbstu.sce.db.entity;
+package ru.spbstu.sce.db.entity.coin;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,4 +14,9 @@ public class Coin{
     @Column(unique = true, nullable = false)
     private String coinName;
 
+    public Coin(String coinName) {
+        this.coinName = coinName;
+    }
+
+    public Coin() {}
 }

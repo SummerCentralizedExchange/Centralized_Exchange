@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import ru.spbstu.sce.db.entity.*;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.user.User;
+import ru.spbstu.sce.db.entity.user.UserBalance;
+import ru.spbstu.sce.db.entity.user.UserBalanceId;
 import ru.spbstu.sce.db.repositories.*;
 
 import java.math.BigDecimal;
@@ -57,7 +60,7 @@ public class DatabaseIntegrationTest {
     @Test
     public void testCreateUserBalance() {
         User user = new User();
-        user.setLogin("testUser");
+        user.setLogin("testUser2");
         user.setPassword("password");
         userRepository.save(user);
 
@@ -81,7 +84,7 @@ public class DatabaseIntegrationTest {
     @Test
     public void testCreateOrderHistory() {
         User user = new User();
-        user.setLogin("testUser");
+        user.setLogin("testUser3");
         user.setPassword("password");
         userRepository.save(user);
 

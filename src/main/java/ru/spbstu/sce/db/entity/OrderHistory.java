@@ -2,6 +2,7 @@ package ru.spbstu.sce.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import ru.spbstu.sce.db.entity.coin.Coin;
 import ru.spbstu.sce.db.entity.user.User;
 
 import java.math.BigDecimal;
@@ -35,4 +36,16 @@ public class OrderHistory {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public OrderHistory() {}
+
+    public OrderHistory(BigDecimal price, BigDecimal quantity, LocalDateTime timestamp, String side, Coin baseCoin, Coin quoteCoin, User user) {
+        this.price = price;
+        this.quantity = quantity;
+        this.timestamp = timestamp;
+        this.side = side;
+        this.baseCoin = baseCoin;
+        this.quoteCoin = quoteCoin;
+        this.user = user;
+    }
 }
