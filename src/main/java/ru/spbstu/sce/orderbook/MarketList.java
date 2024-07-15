@@ -55,8 +55,7 @@ public class MarketList {
 
         if (orderBooks.containsKey(symbol)) {
             OrderBook orderBook = orderBooks.get(symbol);
-            Map<BigDecimal, List<Order>> bidMap = orderBook.getBidMap();
-            return bidMap;
+            return orderBook.getBidMap();
         }
 
         return null;
@@ -68,8 +67,7 @@ public class MarketList {
         if (orderBooks.containsKey(symbol)) {
 
             OrderBook orderBook = orderBooks.get(symbol);
-            Map<BigDecimal, List<Order>> offerMap = orderBook.getOfferMap();
-            return offerMap;
+            return orderBook.getOfferMap();
         }
 
         return null;
@@ -120,5 +118,19 @@ public class MarketList {
             return allOrders;
         }
         return new ArrayList<>();
+    }
+
+    public String bidMarket(OrderItem orderItem) {
+        if (!orderBooks.containsKey(orderItem.getSymbol())) {
+            throw new IllegalArgumentException("Unknown symbol" + orderItem.getSymbol());
+        }
+        return orderBooks.get(orderItem.getSymbol()).bidMarket(orderItem.getQuantity());
+    }
+
+    public String offerMarket(OrderItem orderItem) {
+        if (!orderBooks.containsKey(orderItem.getSymbol())) {
+            throw new IllegalArgumentException("Unknown symbol" + orderItem.getSymbol());
+        }
+        return orderBooks.get(orderItem.getSymbol()).offerMarket(orderItem.getQuantity());
     }
 }

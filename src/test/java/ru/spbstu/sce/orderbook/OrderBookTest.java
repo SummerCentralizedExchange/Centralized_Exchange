@@ -57,6 +57,6 @@ public class OrderBookTest {
         market.addBid(A_PRICE, BigDecimal.valueOf(9));
         market.matchOrders();
         assertEquals(BigDecimal.valueOf(3), market.getBidMap().get(A_PRICE).get(0).getQuantity());
-        assertTrue(market.getOfferMap().get(A_PRICE).isEmpty());
+        assertNull(market.getOfferMap().get(A_PRICE));
     }
 }

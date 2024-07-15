@@ -11,20 +11,14 @@ public class OrderBook {
 
     private final String symbol;
 
-    private final Map<BigDecimal, List<Order>> bidMap;
-    private final Map<BigDecimal, List<Order>> offerMap;
-
-    private final Queue<BigDecimal> bidMaxPriceList;
-    private final Queue<BigDecimal> offerMinPriceList;
+    private final SortedMap<BigDecimal, List<Order>> bidMap;
+    private final SortedMap<BigDecimal, List<Order>> offerMap;
 
     public OrderBook(String symbol) {
         this.symbol = symbol;
 
         bidMap = new TreeMap<>(Comparator.reverseOrder()); // Usually need bids in reverse price order
         offerMap = new TreeMap<>();
-
-        bidMaxPriceList = new PriorityQueue<>();
-        offerMinPriceList = new PriorityQueue<>();
     }
 
     public void addBid(BigDecimal price, BigDecimal quantity) {
@@ -34,7 +28,6 @@ public class OrderBook {
 
         orders.add(order);
         bidMap.put(order.getPrice(), orders);
-        bidMaxPriceList.add(price);
         matchOrders();
 
         logger.info("addBid: quantity {}", quantity);
@@ -52,78 +45,77 @@ public class OrderBook {
 
         orders.add(order);
         offerMap.put(order.getPrice(), orders);
-        offerMinPriceList.add(order.getPrice());
         matchOrders();
 
         logger.info("offerMap after insert size : {}", orders.size());
     }
 
+    private static void removeFirstOrder(SortedMap<BigDecimal, List<Order>> map) {
+        var entry = map.firstEntry();
+        entry.getValue().removeFirst();
+        if (entry.getValue().isEmpty()) {
+            map.remove(entry.getKey());
+        }
+    }
+
     public void matchOrders() {
-        boolean stop = false;
-        while (!stop) {
-            BigDecimal highestBid = bidMaxPriceList.peek();
-            BigDecimal lowestOffer = offerMinPriceList.peek();
+        while (true) {
+            Map.Entry<BigDecimal, List<Order>> highestBidOrders = bidMap.firstEntry();
+            var lowestOfferOrders = offerMap.firstEntry();
 
-            //Completion condition: there are no purchase or sale orders, or the lowest sale price is higher than the highest purchase price
-            if (lowestOffer == null || highestBid == null || lowestOffer.compareTo(highestBid) > 0) {
-                stop = true;
-                logger.info("OrderBook matchOrders finished = true");
+            // Completion condition: there are no purchase or sale order...
+            if (lowestOfferOrders == null || highestBidOrders == null) {
+                logger.info("OrderBook matchOrders finished. Orderbook is empty");
+                break;
             }
+            BigDecimal highestBid = bidMap.firstKey();
+            BigDecimal lowestOffer = offerMap.firstKey();
+            // ... or the lowest sale price is higher than the highest purchase price
+            if (lowestOffer.compareTo(highestBid) > 0) {
+                logger.info("OrderBook matchOrders finished. Spread is > 0");
+                break;
+            }
+
+            List<Order> bidOrders = highestBidOrders.getValue();
+            List<Order> offerOrders = lowestOfferOrders.getValue();
+
+            // Getting the first (oldest) application from each list
+            Order bidOrder = bidOrders.getFirst();
+            Order offerOrder = offerOrders.getFirst();
+
+            BigDecimal bidQuantity = bidOrder.getQuantity();
+            BigDecimal offerQuantity = offerOrder.getQuantity();
+
+            // If the quantity in the purchase order is greater than the quantity in the sale order
+            if (bidQuantity.compareTo(offerQuantity) > 0) {
+                logger.info("bidQuantity > offerQuantity");
+                logger.info(makeSuccessfulTradeInfo(offerQuantity, lowestOffer));
+
+                // Reducing the quantity in the purchase request
+                bidOrder.setQuantity(bidQuantity.subtract(offerQuantity));
+                logger.info("bidQuantity remaining quantity : {}", bidQuantity);
+
+                // Closing the previous sale request
+                removeFirstOrder(offerMap);
+            }
+            // If the quantity in the sales order is greater than the quantity in the purchase order
+            else if (offerQuantity.compareTo(bidQuantity) > 0) {
+                logger.info("bidQuantity < offerQuantity");
+                logger.info(makeSuccessfulTradeInfo(bidQuantity, highestBid));
+
+                offerOrder.setQuantity(offerQuantity.subtract(bidQuantity));
+                logger.info("offerQuantity remaining quantity : {}", offerQuantity);
+
+                removeFirstOrder(bidMap);
+            }
+            // If the quantity in the purchase and sale orders are equal
             else {
-                List<Order> bidOrders = bidMap.get(highestBid);
-                List<Order> offerOrders = offerMap.get(lowestOffer);
+                logger.info(makeSuccessfulTradeInfo(offerQuantity, highestBid));
 
-                // Getting the first (oldest) application from each list
-                Order bidOrder = bidOrders.get(0);
-                Order offerOrder = offerOrders.get(0);
-
-                BigDecimal bidQuantity = bidOrder.getQuantity();
-                BigDecimal offerQuantity = offerOrder.getQuantity();
-
-                // If the quantity in the purchase order is greater than the quantity in the sale order
-                if (bidQuantity.compareTo(offerQuantity) > 0) {
-                    logger.info("bidQuantity > offerQuantity");
-                    logger.info(makeSuccessfulTradeInfo(offerQuantity, lowestOffer));
-
-                    // Reducing the quantity in the purchase request
-                    bidOrder.setQuantity(bidQuantity.subtract(offerQuantity));
-                    logger.info("bidQuantity remaining quantity : {}", bidQuantity);
-
-                    // Closing the previous sale request
-                    offerOrders.remove(0);
-                    if (offerOrders.isEmpty()) {
-                        offerMinPriceList.remove();
-                    }
-                }
-                // If the quantity in the sales order is greater than the quantity in the purchase order
-                else if (offerQuantity.compareTo(bidQuantity) > 0) {
-                    logger.info("bidQuantity < offerQuantity");
-                    logger.info(makeSuccessfulTradeInfo(bidQuantity, highestBid));
-
-                    offerOrder.setQuantity(offerQuantity.subtract(bidQuantity));
-                    logger.info("offerQuantity remaining quantity : {}", offerQuantity);
-
-                    bidOrders.remove(0);
-                    if (bidOrders.isEmpty()) {
-                        bidMaxPriceList.remove();
-                    }
-                }
-                // If the quantity in the purchase and sale orders are equal
-                else {
-                    logger.info(makeSuccessfulTradeInfo(offerQuantity, highestBid));
-
-                    // We delete closed purchase and sale orders
-                    bidOrders.remove(0);
-                    offerOrders.remove(0);
-
-                    // We remove the price from the queue if all requests for this price are fulfilled
-                    if (bidOrders.isEmpty()) {
-                        bidMaxPriceList.remove();
-                    }
-                    if (offerOrders.isEmpty()) {
-                        offerMinPriceList.remove();
-                    }
-                }
+                // We delete closed purchase and sale orders
+                // We remove the price from the queue if all requests for this price are fulfilled
+                removeFirstOrder(offerMap);
+                removeFirstOrder(bidMap);
             }
         }
     }
@@ -181,5 +173,36 @@ public class OrderBook {
                 logger.info(coin + order.getQuantity() + "shares for " + order.getPrice());
             }
         }
+    }
+
+    public String bidMarket(BigDecimal quantityBaseCoin) {
+        while (quantityBaseCoin.compareTo(BigDecimal.ZERO) > 0) {
+            if (offerMap.isEmpty()) {
+                return "Limit order is needed, orderbook is empty. Your quantity = " + quantityBaseCoin;
+            }
+            var e = offerMap.firstEntry();
+            BigDecimal price = e.getKey();
+            Order matchedOrder = e.getValue().getFirst();
+            BigDecimal quantity = quantityBaseCoin.min(matchedOrder.getQuantity());
+            addBid(price, quantity);
+            quantityBaseCoin = quantityBaseCoin.subtract(quantityBaseCoin);
+        }
+        return "OK";
+    }
+
+    public String offerMarket(BigDecimal quantityBaseCoin) {
+        while (quantityBaseCoin.compareTo(BigDecimal.ZERO) > 0) {
+            if (bidMap.isEmpty()) {
+                // TODO proper error handling. Need to signal the user that his order partially worked
+                return "Limit order is needed, orderbook is empty. Your quantity = " + quantityBaseCoin;
+            }
+            var e = bidMap.firstEntry();
+            BigDecimal price = e.getKey();
+            Order matchedOrder = e.getValue().getFirst();
+            BigDecimal quantity = quantityBaseCoin.min(matchedOrder.getQuantity());
+            addOffer(price, quantity);
+            quantityBaseCoin = quantityBaseCoin.subtract(quantityBaseCoin);
+        }
+        return "OK";
     }
 }
