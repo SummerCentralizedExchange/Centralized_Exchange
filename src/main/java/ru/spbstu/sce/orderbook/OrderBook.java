@@ -185,7 +185,7 @@ public class OrderBook {
             Order matchedOrder = e.getValue().getFirst();
             BigDecimal quantity = quantityBaseCoin.min(matchedOrder.getQuantity());
             addBid(price, quantity);
-            quantityBaseCoin = quantityBaseCoin.subtract(quantityBaseCoin);
+            quantityBaseCoin = quantityBaseCoin.subtract(quantity);
         }
         return "OK";
     }
@@ -201,7 +201,7 @@ public class OrderBook {
             Order matchedOrder = e.getValue().getFirst();
             BigDecimal quantity = quantityBaseCoin.min(matchedOrder.getQuantity());
             addOffer(price, quantity);
-            quantityBaseCoin = quantityBaseCoin.subtract(quantityBaseCoin);
+            quantityBaseCoin = quantityBaseCoin.subtract(quantity);
         }
         return "OK";
     }
