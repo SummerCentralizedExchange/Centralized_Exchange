@@ -23,6 +23,7 @@ export default function MarketOrderForm({symbol, token}:{symbol:UtilsSymbol, tok
     var postData = {
       symbol: `${symbol.baseCoin}${symbol.quoteCoin}`,
       type: 'Market',
+      price: 0,
       ...data
     };
 
