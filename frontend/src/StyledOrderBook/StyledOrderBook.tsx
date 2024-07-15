@@ -6,7 +6,7 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
   
   const [bookStatus, setBookStatus] = useState<boolean>(() => {return book.bids.length !== 0 || book.asks.length !== 0});
   // Ensure there are elements in bids and asks
-  if (!book.bids.length || !book.asks.length) {
+  if (!book.bids.length && !book.asks.length) {
     console.log('Order book is empty');
     return <>
     {!bookStatus && 
@@ -17,6 +17,14 @@ export default function StyledOrderBook({ book }: { book: { bids: string[][], as
       </>
       }
       </>
+  }
+
+  if(book.asks.length == 0){
+    book.asks = [['0','0']]
+  }
+
+  if(book.bids.length == 0){
+    book.bids = [['0','0']]
   }
 
   return (
