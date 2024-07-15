@@ -8,6 +8,7 @@ import axios from 'axios';
 import LoginModal from "./LoginModal/LoginModal";
 import UtilsSymbol from "./Utils/UtilsSymbol";
 import MarketOrderForm from "./OrderForm/MarketOrderForm";
+import { OrderBook } from "@lab49/react-order-book";
 
 const SERVER_ADDRESS = process.env.REACT_APP_ADDRESS;
 
@@ -18,7 +19,8 @@ export default function App() {
   const [symbolList, setSymbolList] = useState<string[]>([]);
 
   const [orderBookData, setOrderBookData] = useState<{ bids: string[][], asks: string[][] }>({asks: [],bids: []});
-  
+  const orderBookNotEmpty = () => {return orderBookData.asks.length !== 0 || orderBookData.bids.length !== 0} 
+
   const [showModal, setShowModal] = useState(true);
   const handleClose = () => setShowModal(false);
   const [userName, setUserName] = useState<string | null>(null);
@@ -130,7 +132,7 @@ export default function App() {
       <SymbolHeader symbol={mergedSymbol} userName={userName} symbolList={symbolList} />
       <StyledOrderBook book={orderBookData}/>
       <OrderForm symbol={mergedSymbol} token={token}/>
-      <MarketOrderForm symbol={symbol} token={token}/>
+      {orderBookNotEmpty() && <MarketOrderForm symbol={symbol} token={token}/>}
       <div ref={chartContainerRef}> </div>
     </div>
   );
